@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="details">
+
+        <item>收入-入會費</item>
+
+        <item>收入-會費</item>
+
+        <item>收入-贊助</item>
+
+        <item>收入-置物櫃</item>
+
+        <item>收入-金牌</item>
+
+        <item>收入-代收租金</item>
+
+        <item>收入-其他</item>
+
+        <item>支出-水電費</item>
+
+        <item>支出-租金</item>
+
+        <item>支出-車馬費</item>
+
+        <item>支出-管理費</item>
+
+        <item>支出-電話費</item>
+
+        <item>支出-交際費</item>
+
+        <item>支出-零用金</item>
+
+        <item>支出-其他</item>
+
+    </string-array>
+</resources>

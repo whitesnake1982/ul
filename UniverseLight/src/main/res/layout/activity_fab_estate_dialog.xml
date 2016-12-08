@@ -1,0 +1,71 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".page.dialog.FABDialogActivity">
+
+    <LinearLayout
+        android:id="@+id/estate_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginStart="@dimen/fab_margin"
+        android:background="@drawable/dialog_background"
+        android:elevation="@dimen/dialog_elevation"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:transitionName="@string/title_activity_patty_cash_dialog">
+
+        <TextView
+            android:id="@+id/dialog_estate_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:text=""
+            android:layout_gravity="center"
+            android:textAppearance="?android:textAppearanceLarge" />
+
+        <include
+            android:id="@+id/ll_estate_include"
+            layout="@layout/fragment_estate_add_page"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/estate_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/btn_background"
+                android:text="@string/button_save"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="#fff"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:layout_marginEnd="@dimen/fab_margin"/>
+
+            <Button
+                android:id="@+id/estate_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_background"
+                android:text="@string/button_cancel"
+                android:layout_centerVertical="true"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="#fff"
+                android:layout_alignBottom="@+id/estate_save"
+                android:layout_toLeftOf="@id/estate_save"
+                android:layout_marginEnd="@dimen/fab_margin"
+                />
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+</FrameLayout>

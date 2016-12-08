@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "858312027376",
+    "firebase_url": "https://universelight-e10c7.firebaseio.com",
+    "project_id": "universelight-e10c7",
+    "storage_bucket": "universelight-e10c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858312027376:android:5b14afe076ed4d76",
+        "android_client_info": {
+          "package_name": "org.universelight.ul"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "858312027376-sjd87hqjahv74ss6hn104ht4qifhkllp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.universelight.ul",
+            "certificate_hash": "23F695F0A2BDC66554C9801A2B73BF343394B299"
+          }
+        },
+        {
+          "client_id": "858312027376-su6k0kjs357g89b3tjo6h9rfihe4h2i7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4ncIq_u2sau73E__j_39q-B1HTvSyzIY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "858312027376-su6k0kjs357g89b3tjo6h9rfihe4h2i7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

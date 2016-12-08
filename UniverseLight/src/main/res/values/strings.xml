@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">宇光氣功研究推廣協會</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">請輸入電子郵件</string>
+    <string name="prompt_password">請輸入登入密碼</string>
+    <string name="action_sign_in">登入</string>
+    <string name="action_sign_in_short">登入</string>
+    <string name="error_invalid_email">電子郵件不存在</string>
+    <string name="error_invalid_password">密碼長度過短</string>
+    <string name="error_incorrect_password">密碼錯誤</string>
+    <string name="error_field_required">必填欄位，請輸入</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_main_page">協會收支明細</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="action_settings">測試用文字</string>
+
+    <string name="button_save">儲存</string>
+    <string name="button_cancel">取消</string>
+    <string name="activity_patty_title">新增零用金項目</string>
+    <string name="activity_cash_title">新增現金項目</string>
+    <string name="activity_estate_title">新增動資產項目</string>
+    <string name="activity_modify_patty_title">修改零用金項目</string>
+    <string name="activity_modify_cash_title">修改現金項目</string>
+    <string name="activity_modify_estate_title">修改動資產項目</string>
+    <string name="cd_title">定存</string>
+    <string name="dd_title">活存</string>
+    <string name="id_title">利息</string>
+    <string name="no_title">單號</string>
+    <string name="month_title">日期</string>
+    <string name="section_title">項目</string>
+    <string name="spinner_title">條目</string>
+    <string name="payment_title">金額</string>
+    <string name="memo_title">備註</string>
+    <string name="pay_type_title">類型</string>
+    <string name="pay_type">請選擇</string>
+    <string name="pay_cost">請輸入</string>
+    <string name="pay_cost_not_required">請輸入(非必填)</string>
+    <string name="radio_type_income">收入</string>
+    <string name="radio_type_outcome">支出</string>
+    <string name="radio_type_input">存入</string>
+    <string name="radio_type_output">提出</string>
+    <string name="spinner_cash_dialog_prompt">請選擇細項</string>
+    <string name="title_activity_patty_cash_dialog">PattyCashDialogActivity</string>
+
+</resources>
