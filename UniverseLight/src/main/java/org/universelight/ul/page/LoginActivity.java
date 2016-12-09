@@ -103,11 +103,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         };
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        mEmailView.setText("test@test.com");
+
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setText("test12345");
+        
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
             @Override
