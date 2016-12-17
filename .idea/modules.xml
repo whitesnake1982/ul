@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/UL.iml" filepath="$PROJECT_DIR$/UL.iml" />
       <module fileurl="file://$PROJECT_DIR$/UniverseLight/UniverseLight.iml" filepath="$PROJECT_DIR$/UniverseLight/UniverseLight.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ul.iml" filepath="$PROJECT_DIR$/ul.iml" />
     </modules>
   </component>
 </project>

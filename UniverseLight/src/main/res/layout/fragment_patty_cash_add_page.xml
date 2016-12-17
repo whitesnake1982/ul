@@ -83,7 +83,7 @@
             android:layout_marginEnd="@dimen/fab_margin"
             android:ems="10"
             android:hint="@string/pay_cost"
-            android:inputType="number"
+            android:inputType="numberSigned"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     </LinearLayout>
