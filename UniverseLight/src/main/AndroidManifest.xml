@@ -17,8 +17,9 @@
         <activity
             android:name=".page.LoginActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            >
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,17 +29,22 @@
         <activity
             android:name=".page.MainPage"
             android:label="@string/title_activity_main_page"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <activity
             android:name=".page.dialog.FABDialogActivity"
             android:parentActivityName=".page.MainPage"
             android:label="@string/title_activity_patty_cash_dialog"
-            android:theme="@style/AppTheme.Dialog"/>
+            android:theme="@style/AppTheme.Dialog"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity
             android:name=".page.dialog.FABUpdateDialogActivity"
             android:parentActivityName=".page.MainPage"
             android:label="@string/title_activity_patty_cash_dialog"
-            android:theme="@style/AppTheme.Dialog"/>
+            android:theme="@style/AppTheme.Dialog"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
     </application>
 
 </manifest>

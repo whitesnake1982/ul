@@ -104,6 +104,7 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Log.e("search","Clicked");
             return true;
         }
 
