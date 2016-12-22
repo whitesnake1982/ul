@@ -16,4 +16,6 @@ public class MobileGlobalVariable extends MultiDexApplication {
             ArrayList<>();
     public HashMap<String, ArrayList<HashMap<String, String>>> hmYearDataArrayList = new
             HashMap<>();
+    public String strSearchYear = "";
+    public String strSearchMonth = "";
 }

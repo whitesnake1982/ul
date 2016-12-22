@@ -19,6 +19,7 @@
 
     <string name="button_save">儲存</string>
     <string name="button_cancel">取消</string>
+    <string name="button_neutral">選擇全部</string>
     <string name="activity_patty_title">新增零用金項目</string>
     <string name="activity_cash_title">新增現金項目</string>
     <string name="activity_estate_title">新增動資產項目</string>

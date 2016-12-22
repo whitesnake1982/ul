@@ -121,7 +121,31 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
             DatePickerDialog dpd = CustomDatePickerDialog.createMonthYearDatePicker(mPage, mYear, mMonth, mDay, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    Util.showLog(mPage, "Year:" + String.valueOf(year) + " " + "Month:" + String.valueOf(monthOfYear + 1));
+
+                    mgv.strSearchYear = String.valueOf(year);
+
+                    String month = "";
+
+                    if(monthOfYear + 1 < 10)
+                    {
+                        month = "0" + String.valueOf(monthOfYear + 1);
+                    }
+                    else
+                    {
+                        month = String.valueOf(monthOfYear + 1);
+                    }
+                    mgv.strSearchMonth = month;
+
+//                    Util.showLog(mPage, "Year:" + mgv.strSearchYear + " " + "Month:" + mgv.strSearchMonth);
+
+                }
+            });
+            dpd.setButton(DialogInterface.BUTTON_NEUTRAL, getString(R.string.button_neutral), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    mgv.strSearchYear = "";
+                    mgv.strSearchMonth = "";
                 }
             });
             dpd.show();
