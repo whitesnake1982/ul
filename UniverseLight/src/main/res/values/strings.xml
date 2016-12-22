@@ -16,6 +16,7 @@
     <string name="title_activity_main_page">協會收支明細</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="action_search">資料搜尋</string>
+    <string name="action_output">輸出PDF</string>
 
     <string name="button_save">儲存</string>
     <string name="button_cancel">取消</string>

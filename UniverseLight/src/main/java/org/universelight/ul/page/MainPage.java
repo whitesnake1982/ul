@@ -48,12 +48,22 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
     public HashMap<String, String> m_hmData = null;
     private MobileGlobalVariable mgv;
 
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mPage = MainPage.this;
         mgv = (MobileGlobalVariable) mPage.getApplicationContext();
+
+        Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
         setContentView(R.layout.activity_main_page);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -111,35 +121,8 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
-            Calendar c = Calendar.getInstance();
-            int mYear = c.get(Calendar.YEAR);
-            int mMonth = c.get(Calendar.MONTH);
-            int mDay = c.get(Calendar.DAY_OF_MONTH);
-
-            DatePickerDialog dpd = CustomDatePickerDialog.createMonthYearDatePicker(mPage, mYear, mMonth, mDay, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-                    mgv.strSearchYear = String.valueOf(year);
-
-                    String month = "";
-
-                    if(monthOfYear + 1 < 10)
-                    {
-                        month = "0" + String.valueOf(monthOfYear + 1);
-                    }
-                    else
-                    {
-                        month = String.valueOf(monthOfYear + 1);
-                    }
-                    mgv.strSearchMonth = month;
-
-//                    Util.showLog(mPage, "Year:" + mgv.strSearchYear + " " + "Month:" + mgv.strSearchMonth);
-
-                }
-            });
+        if (id == R.id.action_search) {
+            DatePickerDialog dpd = getDatePicker();
             dpd.setButton(DialogInterface.BUTTON_NEUTRAL, getString(R.string.button_neutral), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -148,12 +131,50 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
                     mgv.strSearchMonth = "";
                 }
             });
+            dpd.setTitle("請選擇查詢年、月份");
+            dpd.show();
+            return true;
+        }
+        else if (id == R.id.action_output)
+        {
+            DatePickerDialog dpd = getDatePicker();
+            dpd.setTitle("請選擇輸出年、月份");
             dpd.show();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private DatePickerDialog getDatePicker()
+    {
+        DatePickerDialog d;
+        d = CustomDatePickerDialog.createMonthYearDatePicker(mPage, mYear, mMonth, mDay, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                mgv.strSearchYear = String.valueOf(year);
+
+                String month = "";
+
+                if(monthOfYear + 1 < 10)
+                {
+                    month = "0" + String.valueOf(monthOfYear + 1);
+                }
+                else
+                {
+                    month = String.valueOf(monthOfYear + 1);
+                }
+                mgv.strSearchMonth = month;
+
+                Util.showLog(mPage, "Year:" + mgv.strSearchYear + " " + "Month:" + mgv.strSearchMonth);
+
+            }
+        });
+
+        return d;
+    }
+
 
 
     @Override

@@ -25,6 +25,11 @@ public class CustomDatePickerDialog {
             protected void onStop() {
                 //super.onStop();
             }
+
+            @Override
+            public void onDateChanged(DatePicker view, int year, int month, int day) {
+                
+            }
         };
         dpd.setButton(DialogInterface.BUTTON_NEGATIVE, ctx.getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
             @Override
