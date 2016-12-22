@@ -1,6 +1,7 @@
 package org.universelight.ul.page;
 
 import android.app.ActivityOptions;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,20 +16,25 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 
 import org.universelight.ul.R;
+import org.universelight.ul.objects.MobileGlobalVariable;
 import org.universelight.ul.page.dialog.FABUpdateDialogActivity;
 import org.universelight.ul.ui.adapter.SectionsPagerAdapter;
 import org.universelight.ul.page.dialog.FABDialogActivity;
 import org.universelight.ul.page.fragment.CashFragment;
 import org.universelight.ul.page.fragment.EstateFragment;
 import org.universelight.ul.page.fragment.PattyCashFragment;
+import org.universelight.ul.ui.dialog.CustomDatePickerDialog;
 import org.universelight.ul.util.CardViewGetDeleteID;
 import org.universelight.ul.util.CardViewGetID;
 import org.universelight.ul.util.FireBaseClass;
 import org.universelight.ul.util.Util;
 
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 public class MainPage extends AppCompatActivity implements View.OnClickListener, CardViewGetID.CardOnClickListener, CardViewGetDeleteID.CardOnDeleteClickListener{
     public Context mPage;
@@ -40,12 +46,14 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
 
     public static String TAB_TITLE = "零用金明細";
     public HashMap<String, String> m_hmData = null;
+    private MobileGlobalVariable mgv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mPage = MainPage.this;
+        mgv = (MobileGlobalVariable) mPage.getApplicationContext();
         setContentView(R.layout.activity_main_page);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -104,12 +112,25 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Log.e("search","Clicked");
+
+            Calendar c = Calendar.getInstance();
+            int mYear = c.get(Calendar.YEAR);
+            int mMonth = c.get(Calendar.MONTH);
+            int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog dpd = CustomDatePickerDialog.createMonthYearDatePicker(mPage, mYear, mMonth, mDay, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    Util.showLog(mPage, "Year:" + String.valueOf(year) + " " + "Month:" + String.valueOf(monthOfYear + 1));
+                }
+            });
+            dpd.show();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onClick(View view) {

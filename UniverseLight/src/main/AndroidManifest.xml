@@ -13,6 +13,7 @@
         android:icon="@drawable/ukicon"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:name="org.universelight.ul.objects.MobileGlobalVariable"
         android:theme="@style/AppTheme">
         <activity
             android:name=".page.LoginActivity"

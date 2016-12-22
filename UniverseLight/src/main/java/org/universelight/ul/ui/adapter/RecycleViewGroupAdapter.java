@@ -1,7 +1,6 @@
 package org.universelight.ul.ui.adapter;
 
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,10 +13,10 @@ import android.widget.TextView;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import org.universelight.ul.R;
+import org.universelight.ul.objects.MobileGlobalVariable;
 import org.universelight.ul.util.CustomItemDecoration;
 import org.universelight.ul.util.CustomLinearLayoutManager;
 
@@ -39,14 +38,15 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
     private HashMap<String, ArrayList<HashMap<String, String>>> hmYearDataArrayList = new
             HashMap<>();
     private Context m_Context;
+    private MobileGlobalVariable mgv;
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder
+    static class MyViewHolder extends RecyclerView.ViewHolder
     {
 
         TextView     textViewName;
         RecyclerView recyclerView;
 
-        public MyViewHolder(View itemView)
+        MyViewHolder(View itemView)
         {
             super(itemView);
             this.textViewName = (TextView) itemView.findViewById(R.id.tv_groupTitle);
@@ -58,6 +58,7 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
     {
 
         this.m_Context = c;
+        mgv = (MobileGlobalVariable) m_Context.getApplicationContext();
         ref.addValueEventListener(new ValueEventListener()
         {
             public void onDataChange(DataSnapshot snapshot)
@@ -87,7 +88,6 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
                 }
 
                 sortData();
-
                 notifyDataSetChanged();
                 pb.setVisibility(View.GONE);
             }
@@ -105,9 +105,9 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
         alYearList = new ArrayList<>();
 
         //整理年份放入alYearList--ex:2016、2014、2015、2010、2012
-        for (HashMap hm : alData)
+        for (HashMap<String, String> hm : alData)
         {
-            alYearList.add(hm.get("Year").toString());
+            alYearList.add(hm.get("Year"));
         }
 
         //排序年份--ex:2016、2015、2014、2013
@@ -141,9 +141,9 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
             ArrayList<HashMap<String, String>> tempData1 = new ArrayList<>();//月份
             ArrayList<HashMap<String, String>> tempData2 = new ArrayList<>();//日期
 
-            for (HashMap hm : alData)
+            for (HashMap<String, String> hm : alData)
             {
-                if (s1.equals(hm.get("Year").toString()))
+                if (s1.equals(hm.get("Year")))
                 {
                     alTemp.add(hm);
                 }
@@ -152,9 +152,9 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
             //按月份塞入資料
             for (String s2 : alM)
             {
-                for (HashMap hm : alTemp)
+                for (HashMap<String, String> hm : alTemp)
                 {
-                    if (s2.equals(hm.get("Month").toString()))
+                    if (s2.equals(hm.get("Month")))
                     {
                         tempData1.add(hm);
                     }
@@ -163,18 +163,18 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
 
             ArrayList<String> alDate = new ArrayList<>();
 
-            for (HashMap hm : tempData1)
+            for (HashMap<String, String> hm : tempData1)
             {
-                alDate.add(hm.get("Date").toString());
+                alDate.add(hm.get("Date"));
             }
 
             compareArrayList(alDate);
 
             for (String s3 : alDate)
             {
-                for (HashMap hm : tempData1)
+                for (HashMap<String, String> hm : tempData1)
                 {
-                    if (s3.equals(hm.get("Date").toString()))
+                    if (s3.equals(hm.get("Date")))
                     {
                         tempData2.add(hm);
                     }
@@ -183,9 +183,13 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
 
             hmYearDataArrayList.put(s1, tempData2);
         }
+
+        mgv.alData = alData;
+        mgv.alYearList = alYearList;
+        mgv.hmYearDataArrayList = hmYearDataArrayList;
     }
 
-    private void compareArrayList(ArrayList al)
+    private void compareArrayList(ArrayList<String> al)
     {
         Object[] st = al.toArray();
         for (Object s : st)
