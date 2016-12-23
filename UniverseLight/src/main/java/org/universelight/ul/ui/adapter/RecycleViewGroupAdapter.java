@@ -19,6 +19,8 @@ import org.universelight.ul.R;
 import org.universelight.ul.objects.MobileGlobalVariable;
 import org.universelight.ul.util.CustomItemDecoration;
 import org.universelight.ul.util.CustomLinearLayoutManager;
+import org.universelight.ul.util.FilterCondition;
+import org.universelight.ul.util.Util;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +31,7 @@ import java.util.HashMap;
  * Created by hsinheng on 16/7/19.
  */
 public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGroupAdapter
-        .MyViewHolder>
+        .MyViewHolder> implements FilterCondition.OnSearchConditionListener
 {
     private ArrayList<HashMap<String, String>>                  alData              = new
             ArrayList<>();
@@ -39,6 +41,40 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
             HashMap<>();
     private Context m_Context;
     private MobileGlobalVariable mgv;
+    private Firebase fbRef;
+    private ProgressBar pb;
+
+    @Override
+    public void getSearchOptions(final String sYear, final String sMonth) {
+        pb.setVisibility(View.VISIBLE);
+        //TODO 取過濾資料
+        setFireBaseEvent(fbRef, sYear, sMonth);
+    }
+
+    private void setFireBaseEvent(Firebase fb, final String sYear, final String sMonth)
+    {
+        fb.addValueEventListener(new ValueEventListener()
+        {
+            public void onDataChange(DataSnapshot snapshot)
+            {
+                if(!sYear.equals("") && !sMonth.equals(""))
+                {
+                    getSearchData(snapshot, sYear, sMonth);
+                }
+                else
+                {
+                    getAllData(snapshot);
+                }
+            }
+
+            public void onCancelled(FirebaseError firebaseError)
+            {
+
+            }
+        });
+
+
+    }
 
     static class MyViewHolder extends RecyclerView.ViewHolder
     {
@@ -58,46 +94,54 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
     {
 
         this.m_Context = c;
+        this.fbRef = ref;
+        this.pb = pb;
         mgv = (MobileGlobalVariable) m_Context.getApplicationContext();
-        ref.addValueEventListener(new ValueEventListener()
-        {
-            public void onDataChange(DataSnapshot snapshot)
-            {
-                alData.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren())
-                {
 
-                    HashMap<String, String> hmtp = new HashMap<>();
-                    hmtp.put("CostNo", dataSnapshot.child("CostNo").getValue().toString());
-                    hmtp.put("Cost", dataSnapshot.child("Cost").getValue().toString());
-                    hmtp.put("Description", dataSnapshot.child("Description").getValue().toString
-                            ());
-                    hmtp.put("Date", dataSnapshot.child("Date").getValue().toString());
-                    hmtp.put("Type", dataSnapshot.child("Type").getValue().toString());
-                    hmtp.put("Month", dataSnapshot.child("Month").getValue().toString());
-                    hmtp.put("Year", dataSnapshot.child("Year").getValue().toString());
-                    hmtp.put("ID", dataSnapshot.child("ID").getValue().toString());
-
-                    if (dataSnapshot.hasChild("IncomeType"))
-                    {
-                        hmtp.put("IncomeType", dataSnapshot.child("IncomeType").getValue()
-                                .toString());
-                    }
-
-                    alData.add(hmtp);
-                }
-
-                sortData();
-                notifyDataSetChanged();
-                pb.setVisibility(View.GONE);
-            }
-
-            public void onCancelled(FirebaseError firebaseError)
-            {
-
-            }
-        });
+        FilterCondition fc = new FilterCondition();
+        fc.setOnSearchConditionListener(this);
+        setFireBaseEvent(ref, "", "");
     }
+
+    private void getAllData(DataSnapshot snapshot)
+    {
+        alData.clear();
+        for (DataSnapshot dataSnapshot : snapshot.getChildren())
+        {
+
+            HashMap<String, String> hmtp = new HashMap<>();
+            hmtp.put("CostNo", dataSnapshot.child("CostNo").getValue().toString());
+            hmtp.put("Cost", dataSnapshot.child("Cost").getValue().toString());
+            hmtp.put("Description", dataSnapshot.child("Description").getValue().toString
+                    ());
+            hmtp.put("Date", dataSnapshot.child("Date").getValue().toString());
+            hmtp.put("Type", dataSnapshot.child("Type").getValue().toString());
+            hmtp.put("Month", dataSnapshot.child("Month").getValue().toString());
+            hmtp.put("Year", dataSnapshot.child("Year").getValue().toString());
+            hmtp.put("ID", dataSnapshot.child("ID").getValue().toString());
+
+            if (dataSnapshot.hasChild("IncomeType"))
+            {
+                hmtp.put("IncomeType", dataSnapshot.child("IncomeType").getValue()
+                        .toString());
+            }
+
+            alData.add(hmtp);
+        }
+
+        sortData();
+        notifyDataSetChanged();
+        pb.setVisibility(View.GONE);
+    }
+
+    private void getSearchData(DataSnapshot snapshot, String sYear, String sMonth)
+    {
+        alData.clear();
+
+        pb.setVisibility(View.GONE);
+    }
+
+
 
     private void sortData()
     {

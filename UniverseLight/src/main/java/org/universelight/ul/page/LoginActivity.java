@@ -3,12 +3,16 @@ package org.universelight.ul.page;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.hardware.fingerprint.FingerprintManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.os.CancellationSignal;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -69,15 +73,42 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     FirebaseAuth.AuthStateListener authStateListener;
 
 
+    // FingerPrint
+    private KeyguardManager km;
+    private FingerprintManager fm;
+    private CancellationSignal cancellationSignal;
+    private boolean canUseFingerPrint = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE |
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        //改由manifest設定
+//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE |
+//                WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         final SharedPreferences LoginStatus = getSharedPreferences("USER", MODE_PRIVATE);
+
+
+        try
+        {
+            km = (KeyguardManager)getSystemService(Activity.KEYGUARD_SERVICE);
+            fm = getSystemService(FingerprintManager.class);
+            canUseFingerPrint = Util.checkFingerPrintService(this, km, fm);
+        }
+        catch (NoClassDefFoundError e)
+        {
+           Log.e("NoClassDefFoundError" , e.toString());
+        }
+
+
+        //TODO 指紋辨識提示及檢查
+        if(canUseFingerPrint)
+        {
+//            Util.showLog(this, "本服務提供指紋辨識登入，可於登入後至設定啟用。");
+        }
+
         // Set up the login form.
         auth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener()
@@ -237,14 +268,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         if (cancel)
         {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             focusView.requestFocus();
         }
         else
         {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             showProgress(true);
             fireBaseLogin(email,password);
         }
@@ -276,6 +303,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     Intent intent = new Intent();
                     intent.setClass(LoginActivity.this, MainPage.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -413,6 +441,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         int ADDRESS    = 0;
         int IS_PRIMARY = 1;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //TODO 指紋驗證需要這兩行
+//        cancellationSignal.cancel();
+//        cancellationSignal = null;
     }
 
     @Override

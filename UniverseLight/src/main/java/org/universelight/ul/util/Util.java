@@ -1,8 +1,10 @@
 package org.universelight.ul.util;
 
 import android.app.AlertDialog;
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.hardware.fingerprint.FingerprintManager;
 
 /**
  * Created by whitesnake on 2016/7/12.
@@ -55,5 +57,9 @@ public class Util
             }
         });
         dialog.show();
+    }
+
+    public static boolean checkFingerPrintService(Context c, KeyguardManager km, FingerprintManager fm) {
+        return km.isKeyguardSecure() && fm.isHardwareDetected() && fm.hasEnrolledFingerprints();
     }
 }

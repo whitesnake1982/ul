@@ -17,6 +17,7 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="action_search">資料搜尋</string>
     <string name="action_output">輸出PDF</string>
+    <string name="action_option">設定</string>
 
     <string name="button_save">儲存</string>
     <string name="button_cancel">取消</string>

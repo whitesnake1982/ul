@@ -29,6 +29,7 @@ import org.universelight.ul.page.fragment.PattyCashFragment;
 import org.universelight.ul.ui.dialog.CustomDatePickerDialog;
 import org.universelight.ul.util.CardViewGetDeleteID;
 import org.universelight.ul.util.CardViewGetID;
+import org.universelight.ul.util.FilterCondition;
 import org.universelight.ul.util.FireBaseClass;
 import org.universelight.ul.util.Util;
 
@@ -51,6 +52,9 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
     private int mYear;
     private int mMonth;
     private int mDay;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,13 +126,14 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
-            DatePickerDialog dpd = getDatePicker();
+            DatePickerDialog dpd = getDatePicker(id);
             dpd.setButton(DialogInterface.BUTTON_NEUTRAL, getString(R.string.button_neutral), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
                     mgv.strSearchYear = "";
                     mgv.strSearchMonth = "";
+                    FilterCondition.onSearchConditionListener.getSearchOptions(mgv.strSearchYear, mgv.strSearchMonth);
                 }
             });
             dpd.setTitle("請選擇查詢年、月份");
@@ -137,16 +142,22 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
         }
         else if (id == R.id.action_output)
         {
-            DatePickerDialog dpd = getDatePicker();
+            DatePickerDialog dpd = getDatePicker(id);
             dpd.setTitle("請選擇輸出年、月份");
             dpd.show();
+            return true;
+        }
+        else if (id == R.id.action_option)
+        {
+            //TODO 設定dialog
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private DatePickerDialog getDatePicker()
+    private DatePickerDialog getDatePicker(final int id)
     {
         DatePickerDialog d;
         d = CustomDatePickerDialog.createMonthYearDatePicker(mPage, mYear, mMonth, mDay, new DatePickerDialog.OnDateSetListener() {
@@ -167,15 +178,22 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
                 }
                 mgv.strSearchMonth = month;
 
-                Util.showLog(mPage, "Year:" + mgv.strSearchYear + " " + "Month:" + mgv.strSearchMonth);
+                switch (id)
+                {
+                    case R.id.action_search:
+                        //TODO 搜尋對應處理
+                        FilterCondition.onSearchConditionListener.getSearchOptions(mgv.strSearchYear, mgv.strSearchMonth);
+                        break;
+                    case R.id.action_output:
+                        //TODO PDF輸出處理
+                        break;
+                }
 
             }
         });
 
         return d;
     }
-
-
 
     @Override
     public void onClick(View view) {

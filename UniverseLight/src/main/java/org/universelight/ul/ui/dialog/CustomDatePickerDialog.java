@@ -11,8 +11,6 @@ import android.widget.DatePicker;
 
 import org.universelight.ul.R;
 
-import java.lang.reflect.Field;
-
 /**
  * Created by hsinhenglin on 2016/12/22.
  */
@@ -28,7 +26,7 @@ public class CustomDatePickerDialog {
 
             @Override
             public void onDateChanged(DatePicker view, int year, int month, int day) {
-                
+
             }
         };
         dpd.setButton(DialogInterface.BUTTON_NEGATIVE, ctx.getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
@@ -43,8 +41,4 @@ public class CustomDatePickerDialog {
 
         return dpd;
     }
-
-    ;
-
-
 }
