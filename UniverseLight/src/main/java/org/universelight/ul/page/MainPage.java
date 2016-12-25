@@ -1,8 +1,8 @@
 package org.universelight.ul.page;
 
 import android.app.ActivityOptions;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,7 +18,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import org.universelight.ul.R;
 import org.universelight.ul.objects.MobileGlobalVariable;
@@ -37,7 +40,6 @@ import org.universelight.ul.util.Util;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.StringTokenizer;
 
 public class MainPage extends AppCompatActivity implements View.OnClickListener, CardViewGetID.CardOnClickListener, CardViewGetDeleteID.CardOnDeleteClickListener{
     public Context mPage;
@@ -148,32 +150,51 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
         }
         else if (id == R.id.action_option)
         {
-            //TODO 設定dialog
-
             final SharedPreferences LoginStatus = getSharedPreferences("USER", MODE_PRIVATE);
 
-            AlertDialog.Builder dialog = new AlertDialog.Builder(mPage);
-            dialog.setTitle("測試dialog");
+            final Dialog dialog = new Dialog(mPage);
+            dialog.setContentView(R.layout.dialog_setting);
+
+            Switch sw = (Switch) dialog.findViewById(R.id.sw_fingerprint);
+
+            if(LoginStatus.getString("FingerPrint", "0").equals("1"))
+            {
+                sw.setChecked(true);
+            }
+            else
+            {
+                sw.setChecked(false);
+            }
+
+            sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                {
+                    if(isChecked)
+                    {
+                        LoginStatus.edit().putString("FingerPrint", "1").apply();
+                    }
+                    else
+                    {
+                        LoginStatus.edit().putString("FingerPrint", "0").apply();
+                    }
+                }
+            });
+
             dialog.setCancelable(false);
-            dialog.create().setCanceledOnTouchOutside(false);
-            dialog.setMessage("要啟用指紋辨識嗎？");
-            dialog.setPositiveButton("是", new DialogInterface.OnClickListener()
+            dialog.setCanceledOnTouchOutside(false);
+
+            TextView tvBtn = (TextView) dialog.findViewById(R.id.tv_close);
+            tvBtn.setOnClickListener(new View.OnClickListener()
             {
                 @Override
-                public void onClick(DialogInterface dialog, int which)
+                public void onClick(View v)
                 {
-                    LoginStatus.edit().putString("FingerPrint", "1").apply();
+                    dialog.dismiss();
                 }
             });
-            dialog.setNegativeButton("否", new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    LoginStatus.edit().putString("FingerPrint", "0").apply();
-                    dialog.cancel();
-                }
-            });
+
             dialog.show();
             return true;
         }

@@ -48,4 +48,14 @@
     <string name="spinner_cash_dialog_prompt">請選擇細項</string>
     <string name="title_activity_patty_cash_dialog">PattyCashDialogActivity</string>
 
+    <!--設定頁-->
+    <string name="dialog_setting_fingerprint_title">指紋辨識</string>
+    <string name="dialog_setting_button_cancel">關閉</string>
+
+
+    <string name="dialog_fingerprint_button_cancel">取消</string>
+    <string name="dialog_fingerprint_title">指紋驗證</string>
+    <string name="dialog_fingerprint_msg">請將手指置於感應器以進行登入。</string>
+
+
 </resources>

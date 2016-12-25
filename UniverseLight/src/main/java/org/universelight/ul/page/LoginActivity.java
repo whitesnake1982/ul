@@ -5,6 +5,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -56,7 +57,8 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View.OnTouchListener
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View
+        .OnTouchListener
 {
 
     /**
@@ -69,15 +71,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText             mPasswordView;
     private View                 mProgressView;
     private View                 mLoginFormView;
-    FirebaseAuth auth;
+    FirebaseAuth                   auth;
     FirebaseAuth.AuthStateListener authStateListener;
 
 
     // FingerPrint
-    private KeyguardManager km;
+    private KeyguardManager    km;
     private FingerprintManager fm;
     private CancellationSignal cancellationSignal;
     private boolean canUseFingerPrint = false;
+    private Dialog                          dialog;
+    private FingerprintManager.CryptoObject cryptoObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -90,9 +94,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         final SharedPreferences LoginStatus = getSharedPreferences("USER", MODE_PRIVATE);
 
-        String fingerPrintStatus = LoginStatus.getString("FingerPrint","0");
+        String fingerPrintStatus = LoginStatus.getString("FingerPrint", "0");
 
-        Log.e("fingerPrintStatus:" , fingerPrintStatus);
+        Log.e("fingerPrintStatus:", fingerPrintStatus);
 
         // Set up the login form.
         auth = FirebaseAuth.getInstance();
@@ -108,12 +112,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if (user != null)
                 {
                     Log.d("onAuthStateChanged", "登入");
-                    LoginStatus.edit().putString("UID",user.getUid()).commit();
+                    LoginStatus.edit().putString("UID", user.getUid()).commit();
                 }
                 else
                 {
                     Log.d("onAuthStateChanged", "已登出");
-                    LoginStatus.edit().putString("UID","").commit();
+                    LoginStatus.edit().putString("UID", "").commit();
                 }
             }
         };
@@ -155,21 +159,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         try
         {
-            km = (KeyguardManager)getSystemService(Activity.KEYGUARD_SERVICE);
+            km = (KeyguardManager) getSystemService(Activity.KEYGUARD_SERVICE);
             fm = getSystemService(FingerprintManager.class);
             canUseFingerPrint = Util.checkFingerPrintService(this, km, fm);
         }
         catch (NoClassDefFoundError e)
         {
-            Log.e("NoClassDefFoundError" , e.toString());
+            Log.e("NoClassDefFoundError", e.toString());
         }
 
-
-        //TODO 指紋辨識提示及檢查
-        if(canUseFingerPrint && fingerPrintStatus.equals("1"))
+        if (canUseFingerPrint && fingerPrintStatus.equals("1"))
         {
-            Log.e("fingerPrintStatus:" , fingerPrintStatus);
-//            Util.showLog(this, "本服務提供指紋辨識登入，可於登入後至設定啟用。");
+
+
+            dialog = new Dialog(this);
+            dialog.setContentView(R.layout.dialog_fingerprint_login);
+            Button btnClose = (Button) dialog.findViewById(R.id.btn_finger_cancel);
+
+            btnClose.setOnClickListener(new OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+
             startFingerprintListening();
         }
 
@@ -179,13 +196,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     {
         cancellationSignal = new CancellationSignal();
 
-        if (checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PackageManager.PERMISSION_GRANTED) //In SDK 23, we need to check the permission before we call FingerprintManager API functionality.
+        if (checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PackageManager
+                .PERMISSION_GRANTED) //In SDK 23, we need to check the permission before we call
+        // FingerprintManager API functionality.
         {
-            fm.authenticate(null, //crypto objects 的 wrapper class，可以透過它讓 authenticate 過程更為安全，但也可以不使用。
-                    cancellationSignal, //用來取消 authenticate 的 object
-                    0, //optional flags; should be 0
-                    mAuthenticationCallback, //callback 用來接收 authenticate 成功與否，有三個 callback method
-                    null); //optional 的參數，如果有使用，FingerprintManager 會透過它來傳遞訊息
+
+            Util.generateKey();
+
+            if (Util.cipherInit())
+            {
+                cryptoObject =
+                        new FingerprintManager.CryptoObject(Util.getCipher());
+                fm.authenticate(cryptoObject, //crypto objects 的 wrapper class，可以透過它讓
+                        // authenticate 過程更為安全，但也可以不使用。
+                        cancellationSignal, //用來取消 authenticate 的 object
+                        0, //optional flags; should be 0
+                        mAuthenticationCallback, //callback 用來接收 authenticate 成功與否，有三個 callback
+                        // method
+                        null); //optional 的參數，如果有使用，FingerprintManager 會透過它來傳遞訊息
+            }
+
+
         }
     }
 
@@ -196,21 +227,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         public void onAuthenticationError(int errorCode, CharSequence errString)
         {
             Log.e("finger print", "error " + errorCode + " " + errString);
+            dialog.dismiss();
         }
 
         @Override
         public void onAuthenticationFailed()
         {
             Log.e("finger print", "onAuthenticationFailed");
+            dialog.dismiss();
         }
 
         @Override
         public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)
         {
             Log.i("finger print", "onAuthenticationSucceeded");
-            SharedPreferences LoginStatus = getSharedPreferences("USER", MODE_PRIVATE);
 
-            fireBaseLogin(LoginStatus.getString("AuthMail",""), LoginStatus.getString("AuthPW",""));
+            dialog.dismiss();
+
+            SharedPreferences LoginStatus = getSharedPreferences("USER", MODE_PRIVATE);
+            showProgress(true);
+            fireBaseLogin(LoginStatus.getString("AuthMail", ""), LoginStatus.getString("AuthPW",
+                    ""));
         }
     };
 
@@ -319,16 +356,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         else
         {
             showProgress(true);
-            fireBaseLogin(email,password);
+            fireBaseLogin(email, password);
         }
     }
 
     private void fireBaseLogin(String email, String password)
     {
-        Log.d("AUTH", email+"/"+password);
+        Log.d("AUTH", email + "/" + password);
         SharedPreferences LoginStatus = getSharedPreferences("USER", MODE_PRIVATE);
-        LoginStatus.edit().putString("AuthMail",email).apply();
-        LoginStatus.edit().putString("AuthPW",password).apply();
+        LoginStatus.edit().putString("AuthMail", email).apply();
+        LoginStatus.edit().putString("AuthPW", password).apply();
 
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>()
 
@@ -462,7 +499,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public boolean onTouch(View v, MotionEvent event)
     {
-        switch(v.getId())
+        switch (v.getId())
         {
             case R.id.login_form:
                 packUpKeyboard(v);
@@ -473,9 +510,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void packUpKeyboard(View v)
     {
-        InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(v.getWindowToken(),0);
-        Log.d("Close","keyboard");
+        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context
+                .INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        Log.d("Close", "keyboard");
     }
 
     private interface ProfileQuery
@@ -490,10 +528,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     @Override
-    public void onPause() {
+    public void onPause()
+    {
         super.onPause();
 
-        if(cancellationSignal != null)
+        if (cancellationSignal != null)
         {
             cancellationSignal.cancel();
             cancellationSignal = null;
@@ -501,13 +540,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
         auth.addAuthStateListener(authStateListener);
     }
 
     @Override
-    protected void onStop() {
+    protected void onStop()
+    {
         super.onStop();
         auth.removeAuthStateListener(authStateListener);
     }
