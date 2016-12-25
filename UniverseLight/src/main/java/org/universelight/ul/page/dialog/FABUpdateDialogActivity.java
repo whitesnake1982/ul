@@ -2,6 +2,7 @@ package org.universelight.ul.page.dialog;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -93,7 +94,9 @@ public class FABUpdateDialogActivity extends FABDefault implements View.OnClickL
         m_tvDate.setOnClickListener(this);
 
         //方式一
-        setupSharedEelementTransitions1();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setupSharedEelementTransitions1();
+        }
         //方式二
 //        setupSharedEelementTransitions2();
 
@@ -158,7 +161,9 @@ public class FABUpdateDialogActivity extends FABDefault implements View.OnClickL
         m_tvDate.setOnClickListener(this);
 
         //方式一
-        setupSharedEelementTransitions1();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setupSharedEelementTransitions1();
+        }
         //方式二
 //        setupSharedEelementTransitions2();
 
@@ -220,7 +225,9 @@ public class FABUpdateDialogActivity extends FABDefault implements View.OnClickL
         m_tvDate.setOnClickListener(this);
 
         //方式一
-        setupSharedEelementTransitions1();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setupSharedEelementTransitions1();
+        }
         //方式二
 //        setupSharedEelementTransitions2();
 

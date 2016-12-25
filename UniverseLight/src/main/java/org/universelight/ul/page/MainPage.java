@@ -1,10 +1,12 @@
 package org.universelight.ul.page;
 
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -52,9 +54,6 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
     private int mYear;
     private int mMonth;
     private int mDay;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +150,31 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
         {
             //TODO 設定dialog
 
+            final SharedPreferences LoginStatus = getSharedPreferences("USER", MODE_PRIVATE);
+
+            AlertDialog.Builder dialog = new AlertDialog.Builder(mPage);
+            dialog.setTitle("測試dialog");
+            dialog.setCancelable(false);
+            dialog.create().setCanceledOnTouchOutside(false);
+            dialog.setMessage("要啟用指紋辨識嗎？");
+            dialog.setPositiveButton("是", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    LoginStatus.edit().putString("FingerPrint", "1").apply();
+                }
+            });
+            dialog.setNegativeButton("否", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    LoginStatus.edit().putString("FingerPrint", "0").apply();
+                    dialog.cancel();
+                }
+            });
+            dialog.show();
             return true;
         }
 
