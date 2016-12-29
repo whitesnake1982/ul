@@ -48,6 +48,7 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
     public void getSearchOptions(final String sYear, final String sMonth) {
         pb.setVisibility(View.VISIBLE);
         //TODO 取過濾資料
+        Log.e("query:" , "Year-" + sYear + "; Month-" + sMonth);
         setFireBaseEvent(fbRef, sYear, sMonth);
     }
 

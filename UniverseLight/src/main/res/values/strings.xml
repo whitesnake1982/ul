@@ -13,6 +13,11 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="activity_main_page_title_pc">零用金明細</string>
+    <string name="activity_main_page_title_c">現金明細</string>
+    <string name="activity_main_page_title_e">動資產明細</string>
+
     <string name="title_activity_main_page">協會收支明細</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="action_search">資料搜尋</string>
@@ -50,6 +55,8 @@
 
     <!--設定頁-->
     <string name="dialog_setting_fingerprint_title">指紋辨識</string>
+    <string name="dialog_query_title">請選擇查詢年、月份</string>
+    <string name="dialog_output_title">請選擇輸出年、月份</string>
     <string name="dialog_setting_button_cancel">關閉</string>
 
 

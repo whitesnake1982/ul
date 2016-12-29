@@ -32,6 +32,7 @@ import org.universelight.ul.page.fragment.CashFragment;
 import org.universelight.ul.page.fragment.EstateFragment;
 import org.universelight.ul.page.fragment.PattyCashFragment;
 import org.universelight.ul.ui.dialog.CustomDatePickerDialog;
+import org.universelight.ul.ui.dialog.SettingDialog;
 import org.universelight.ul.util.CardViewGetDeleteID;
 import org.universelight.ul.util.CardViewGetID;
 import org.universelight.ul.util.FilterCondition;
@@ -43,19 +44,19 @@ import java.util.HashMap;
 
 public class MainPage extends AppCompatActivity implements View.OnClickListener, CardViewGetID.CardOnClickListener, CardViewGetDeleteID.CardOnDeleteClickListener{
     public Context mPage;
+
+    public static final int FAB_DIALOG_NO_DATA = 0;
+    public static final int FAB_DIALOG_WITH_DATA = 1;
+    public static final int PAGE_TITLE_PC = 0;
+    public static final int PAGE_TITLE_C = 1;
+    public static final int PAGE_TITLE_E = 2;
+
     private FloatingActionButton fab;
     private int onPageScrolledPrePosition = -1;
-    private String[] m_strTitle = new String[]{"零用金明細",
-            "現金明細",
-            "動資產明細"};
 
     public static String TAB_TITLE = "零用金明細";
     public HashMap<String, String> m_hmData = null;
     private MobileGlobalVariable mgv;
-
-    private int mYear;
-    private int mMonth;
-    private int mDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +64,6 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
 
         mPage = MainPage.this;
         mgv = (MobileGlobalVariable) mPage.getApplicationContext();
-
-        Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
 
         setContentView(R.layout.activity_main_page);
 
@@ -84,9 +80,9 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
         cardViewGetDeleteID.setCardOnDeleteClickListener(this);
 
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mSectionsPagerAdapter.addFragment(PattyCashFragment.newInstance(), m_strTitle[0]);
-        mSectionsPagerAdapter.addFragment(CashFragment.newInstance(), m_strTitle[1]);
-        mSectionsPagerAdapter.addFragment(EstateFragment.newInstance(), m_strTitle[2]);
+        mSectionsPagerAdapter.addFragment(PattyCashFragment.newInstance(), getString(R.string.activity_main_page_title_pc));
+        mSectionsPagerAdapter.addFragment(CashFragment.newInstance(), getString(R.string.activity_main_page_title_c));
+        mSectionsPagerAdapter.addFragment(EstateFragment.newInstance(), getString(R.string.activity_main_page_title_e));
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -125,7 +121,6 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
             DatePickerDialog dpd = getDatePicker(id);
             dpd.setButton(DialogInterface.BUTTON_NEUTRAL, getString(R.string.button_neutral), new DialogInterface.OnClickListener() {
@@ -137,65 +132,18 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
                     FilterCondition.onSearchConditionListener.getSearchOptions(mgv.strSearchYear, mgv.strSearchMonth);
                 }
             });
-            dpd.setTitle("請選擇查詢年、月份");
             dpd.show();
             return true;
         }
         else if (id == R.id.action_output)
         {
             DatePickerDialog dpd = getDatePicker(id);
-            dpd.setTitle("請選擇輸出年、月份");
             dpd.show();
             return true;
         }
         else if (id == R.id.action_option)
         {
-            final SharedPreferences LoginStatus = getSharedPreferences("USER", MODE_PRIVATE);
-
-            final Dialog dialog = new Dialog(mPage);
-            dialog.setContentView(R.layout.dialog_setting);
-
-            Switch sw = (Switch) dialog.findViewById(R.id.sw_fingerprint);
-
-            if(LoginStatus.getString("FingerPrint", "0").equals("1"))
-            {
-                sw.setChecked(true);
-            }
-            else
-            {
-                sw.setChecked(false);
-            }
-
-            sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-            {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-                {
-                    if(isChecked)
-                    {
-                        LoginStatus.edit().putString("FingerPrint", "1").apply();
-                    }
-                    else
-                    {
-                        LoginStatus.edit().putString("FingerPrint", "0").apply();
-                    }
-                }
-            });
-
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-
-            TextView tvBtn = (TextView) dialog.findViewById(R.id.tv_close);
-            tvBtn.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.show();
+            SettingDialog sd = new SettingDialog(mPage);
             return true;
         }
 
@@ -204,8 +152,13 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
 
     private DatePickerDialog getDatePicker(final int id)
     {
+        Calendar c = Calendar.getInstance();
+        int      iYear = c.get(Calendar.YEAR);
+        int      iMonth = c.get(Calendar.MONTH);
+        int      iDay = c.get(Calendar.DAY_OF_MONTH);
+
         DatePickerDialog d;
-        d = CustomDatePickerDialog.createMonthYearDatePicker(mPage, mYear, mMonth, mDay, new DatePickerDialog.OnDateSetListener() {
+        d = CustomDatePickerDialog.createMonthYearDatePicker(mPage, id, iYear, iMonth, iDay, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
@@ -247,11 +200,11 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
             case R.id.fab:
                 if(null == m_hmData)
                 {
-                    openFABDialog(0);
+                    openFABDialog(FAB_DIALOG_NO_DATA);
                 }
                 else
                 {
-                    openFABDialog(1);
+                    openFABDialog(FAB_DIALOG_WITH_DATA);
                 }
                 break;
         }
@@ -269,11 +222,8 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
         int iTab = onPageScrolledPrePosition;
         int RC_LOGIN = 100;
 
-        if (iTab < 0) {
-            iTab = 0;
-        }
+        setTabTitle(iTab);
 
-        TAB_TITLE = m_strTitle[iTab];
         Intent intent;
         ActivityOptions options;
         Bundle b = new Bundle();
@@ -282,13 +232,13 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
 
             intent = new Intent(MainPage.this, FABDialogActivity.class);
 
-            if (TAB_TITLE.equals(m_strTitle[0])) {
+            if (TAB_TITLE.equals(getString(R.string.activity_main_page_title_pc))) {
                 b.putInt("DIALOG_TYPE", 1);
                 intent.putExtras(b);
-            } else if (TAB_TITLE.equals(m_strTitle[1])) {
+            } else if (TAB_TITLE.equals(getString(R.string.activity_main_page_title_c))) {
                 b.putInt("DIALOG_TYPE", 2);
                 intent.putExtras(b);
-            } else if (TAB_TITLE.equals(m_strTitle[2])) {
+            } else if (TAB_TITLE.equals(getString(R.string.activity_main_page_title_e))) {
                 b.putInt("DIALOG_TYPE", 3);
                 intent.putExtras(b);
             }
@@ -298,7 +248,7 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
 
             intent = new Intent(MainPage.this, FABUpdateDialogActivity.class);
 
-            if (TAB_TITLE.equals(m_strTitle[0])) {
+            if (TAB_TITLE.equals(getString(R.string.activity_main_page_title_pc))) {
                 b.putInt("DIALOG_TYPE", 1);
                 b.putString("CostNo", m_hmData.get("CostNo"));
                 b.putString("Cost", m_hmData.get("Cost"));
@@ -306,7 +256,7 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
                 b.putString("Date", m_hmData.get("Date"));
                 b.putString("Type", m_hmData.get("Type"));
                 b.putString("ID", m_hmData.get("ID"));
-            } else if (TAB_TITLE.equals(m_strTitle[1])) {
+            } else if (TAB_TITLE.equals(getString(R.string.activity_main_page_title_c))) {
                 b.putInt("DIALOG_TYPE", 2);
                 b.putString("CostNo", m_hmData.get("CostNo"));
                 b.putString("Cost", m_hmData.get("Cost"));
@@ -314,7 +264,7 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
                 b.putString("Date", m_hmData.get("Date"));
                 b.putString("Type", m_hmData.get("Type"));
                 b.putString("ID", m_hmData.get("ID"));
-            } else if (TAB_TITLE.equals(m_strTitle[2])) {
+            } else if (TAB_TITLE.equals(getString(R.string.activity_main_page_title_e))) {
                 b.putInt("DIALOG_TYPE", 3);
                 b.putString("CostNo", m_hmData.get("CostNo"));
                 b.putString("Cost", m_hmData.get("Cost"));
@@ -354,17 +304,13 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
                 int iTab = onPageScrolledPrePosition;
                 int type = -1;
 
-                if (iTab < 0) {
-                    iTab = 0;
-                }
+                setTabTitle(iTab);
 
-                TAB_TITLE = m_strTitle[iTab];
-
-                if (TAB_TITLE.equals(m_strTitle[0])) {
+                if (TAB_TITLE.equals(getString(R.string.activity_main_page_title_pc))) {
                     type = 1;
-                } else if (TAB_TITLE.equals(m_strTitle[1])) {
+                } else if (TAB_TITLE.equals(getString(R.string.activity_main_page_title_c))) {
                     type = 2;
-                } else if (TAB_TITLE.equals(m_strTitle[2])) {
+                } else if (TAB_TITLE.equals(getString(R.string.activity_main_page_title_e))) {
                     type = 3;
                 }
 
@@ -372,5 +318,25 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
                 fbc.deleteDataToFireBase(mPage, hm, type);
             }
         });
+    }
+
+    private void setTabTitle(int iTab)
+    {
+        if (iTab < 0) {
+            iTab = 0;
+        }
+
+        switch (iTab)
+        {
+            case PAGE_TITLE_PC:
+                TAB_TITLE = getString(R.string.activity_main_page_title_pc);
+                break;
+            case PAGE_TITLE_C:
+                TAB_TITLE = getString(R.string.activity_main_page_title_c);
+                break;
+            case PAGE_TITLE_E:
+                TAB_TITLE = getString(R.string.activity_main_page_title_e);
+                break;
+        }
     }
 }

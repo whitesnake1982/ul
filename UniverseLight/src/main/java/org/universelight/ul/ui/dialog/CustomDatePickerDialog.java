@@ -16,7 +16,7 @@ import org.universelight.ul.R;
  */
 
 public class CustomDatePickerDialog {
-    public static DatePickerDialog createMonthYearDatePicker(Context ctx, int year, int month, int day, DatePickerDialog.OnDateSetListener listener) {
+    public static DatePickerDialog createMonthYearDatePicker(Context ctx, int id, int year, int month, int day, DatePickerDialog.OnDateSetListener listener) {
         DatePickerDialog dpd = new DatePickerDialog(ctx, AlertDialog.THEME_HOLO_LIGHT, listener, year, month, day) {
             //複寫onStop，讓取消時 ，不呼叫 onDateSet方法
             @Override
@@ -37,7 +37,15 @@ public class CustomDatePickerDialog {
         });
         ((ViewGroup) dpd.getDatePicker()).findViewById(Resources.getSystem().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
 
-        dpd.setTitle("");
+        switch (id)
+        {
+            case R.id.action_search:
+                dpd.setTitle(ctx.getString(R.string.dialog_query_title));
+                break;
+            case R.id.action_output:
+                dpd.setTitle(ctx.getString(R.string.dialog_output_title));
+                break;
+        }
 
         return dpd;
     }
