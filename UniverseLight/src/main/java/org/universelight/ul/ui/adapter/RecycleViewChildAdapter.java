@@ -9,12 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import org.universelight.ul.R;
+import org.universelight.ul.ui.ULUIDefine;
 import org.universelight.ul.util.CardViewGetDeleteID;
 import org.universelight.ul.util.CardViewGetID;
-import org.universelight.ul.util.FireBaseClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static org.universelight.ul.ui.ULUIDefine.FontSize_6u;
+import static org.universelight.ul.ui.ULUIDefine.FontSize_8u;
 
 /**
  * Created by hsinheng on 16/7/19.
@@ -38,10 +41,10 @@ public class RecycleViewChildAdapter extends RecyclerView.Adapter<RecycleViewChi
         CardView cvCard;
         TextView tvChildTitle;
         TextView tvCBtnDelete;
-        TextView tvDateValue;
-        TextView tvCostNOValue;
-        TextView tvTypeValue;
-        TextView tvCostValue;
+        TextView tvDateValue, tvDateTitle;
+        TextView tvCostNOValue, tvCostNOTitle;
+        TextView tvTypeValue, tvTypeTitle;
+        TextView tvCostValue, tvCostTitle;
 
         public ChildViewHolder(View itemView)
         {
@@ -50,9 +53,13 @@ public class RecycleViewChildAdapter extends RecyclerView.Adapter<RecycleViewChi
             this.tvChildTitle = (TextView) itemView.findViewById(R.id.tv_child_title);
             this.tvCBtnDelete = (TextView) itemView.findViewById(R.id.tv_btn_delete);
             this.tvDateValue = (TextView) itemView.findViewById(R.id.tv_child_date_value);
+            this.tvDateTitle = (TextView) itemView.findViewById(R.id.tv_child_date_title);
             this.tvCostNOValue = (TextView) itemView.findViewById(R.id.tv_child_cost_number_value);
+            this.tvCostNOTitle = (TextView) itemView.findViewById(R.id.tv_child_cost_number_title);
             this.tvTypeValue = (TextView) itemView.findViewById(R.id.tv_child_type_value);
+            this.tvTypeTitle = (TextView) itemView.findViewById(R.id.tv_child_type_title);
             this.tvCostValue = (TextView) itemView.findViewById(R.id.tv_child_cost_value);
+            this.tvCostTitle = (TextView) itemView.findViewById(R.id.tv_child_cost_title);
         }
     }
 
@@ -82,9 +89,26 @@ public class RecycleViewChildAdapter extends RecyclerView.Adapter<RecycleViewChi
         TextView       tvChildTitle  = holder.tvChildTitle;
         TextView       tvBtnDelete   = holder.tvCBtnDelete;
         TextView       tvDateValue   = holder.tvDateValue;
+        TextView       tvDateTitle   = holder.tvDateTitle;
         TextView       tvCostNOValue = holder.tvCostNOValue;
+        TextView       tvCostNOTitle = holder.tvCostNOTitle;
         TextView       tvTypeValue   = holder.tvTypeValue;
+        TextView       tvTypeTitle   = holder.tvTypeTitle;
         TextView       tvCostValue   = holder.tvCostValue;
+        TextView       tvCostTitle   = holder.tvCostTitle;
+
+        ULUIDefine mUIDefine = ULUIDefine.getInstance(m_Context);
+
+        mUIDefine.setTextSize(FontSize_8u, tvChildTitle);
+        mUIDefine.setTextSize(FontSize_8u, tvBtnDelete);
+        mUIDefine.setTextSize(FontSize_6u, tvDateValue);
+        mUIDefine.setTextSize(FontSize_6u, tvDateTitle);
+        mUIDefine.setTextSize(FontSize_6u, tvCostNOValue);
+        mUIDefine.setTextSize(FontSize_6u, tvCostNOTitle);
+        mUIDefine.setTextSize(FontSize_6u, tvTypeValue);
+        mUIDefine.setTextSize(FontSize_6u, tvTypeTitle);
+        mUIDefine.setTextSize(FontSize_6u, tvCostValue);
+        mUIDefine.setTextSize(FontSize_6u, tvCostTitle);
 
         int    i = listPosition - 1;
         String strMonth;

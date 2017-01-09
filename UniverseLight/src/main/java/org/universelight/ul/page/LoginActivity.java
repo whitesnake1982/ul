@@ -15,7 +15,6 @@ import android.hardware.fingerprint.FingerprintManager;
 import android.os.CancellationSignal;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
 import android.content.CursorLoader;
@@ -48,8 +47,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.universelight.ul.R;
-import org.universelight.ul.objects.MobileGlobalVariable;
-import org.universelight.ul.ui.ULUIDefine;
 import org.universelight.ul.util.Util;
 
 import java.util.ArrayList;
@@ -57,6 +54,7 @@ import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 import static org.universelight.ul.ui.ULUIDefine.FontSize_5u;
+import static org.universelight.ul.ui.ULUIDefine.FontSize_8u;
 
 /**
  * A login screen that offers login via email/password.
@@ -209,8 +207,11 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
             dialog = new Dialog(this);
             dialog.setContentView(R.layout.dialog_fingerprint_login);
-            Button btnClose = (Button) dialog.findViewById(R.id.btn_finger_cancel);
 
+            TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_finger_title);
+            TextView tvMsg = (TextView) dialog.findViewById(R.id.tv_finger_msg);
+            ImageView iv = (ImageView) dialog.findViewById(R.id.iv_finger);
+            Button btnClose = (Button) dialog.findViewById(R.id.btn_finger_cancel);
             btnClose.setOnClickListener(new OnClickListener()
             {
                 @Override
@@ -219,6 +220,14 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                     dialog.dismiss();
                 }
             });
+
+            mUIDefine.setTextSize(FontSize_8u, tvTitle);
+            mUIDefine.setTextSize(FontSize_5u, tvMsg);
+            iv.getLayoutParams().width = mUIDefine.getLayoutWidth(35);
+            iv.getLayoutParams().height = mUIDefine.getLayoutWidth(35);
+            btnClose.getLayoutParams().width = mUIDefine.getLayoutWidth(70);
+            btnClose.getLayoutParams().height = mUIDefine.getLayoutWidth(13);
+            mUIDefine.setTextSize(FontSize_5u, btnClose);
 
             dialog.show();
 

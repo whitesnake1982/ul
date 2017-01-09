@@ -17,15 +17,17 @@ import com.firebase.client.ValueEventListener;
 
 import org.universelight.ul.R;
 import org.universelight.ul.objects.MobileGlobalVariable;
+import org.universelight.ul.ui.ULUIDefine;
 import org.universelight.ul.util.CustomItemDecoration;
 import org.universelight.ul.util.CustomLinearLayoutManager;
 import org.universelight.ul.util.FilterCondition;
-import org.universelight.ul.util.Util;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+
+import static org.universelight.ul.ui.ULUIDefine.FontSize_10u;
 
 /**
  * Created by hsinheng on 16/7/19.
@@ -282,7 +284,9 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
         TextView     textViewName = holder.textViewName;
         RecyclerView recyclerView = holder.recyclerView;
 
+        ULUIDefine mUIDefine = ULUIDefine.getInstance(m_Context);
         textViewName.setText(alYearList.get(listPosition));
+        mUIDefine.setTextSize(FontSize_10u, textViewName);
 
         recyclerView.setLayoutManager(new CustomLinearLayoutManager(m_Context));
 
