@@ -1,0 +1,85 @@
+<resources>
+    <!-- mLayout 整體定義 -->
+    <!-- 調整為Yahoo模式 全畫面長寬比為「480 x 270」 -->
+    <integer name="ul_ui_integer_activity_weight_sum_vertical">100</integer>
+    <integer name="ul_ui_integer_activity_weight_sum_horizontal">100</integer>
+
+    <!--
+    	mLayout 排版單位定義
+    	在 Xml 檔利用以下定義做版面設計，為了方便 RD 預覽大約的版面，
+    	還需在 Java 檔做 ul_uiDefine 轉換，才是真正的 mLayout 呈現。
+    	
+    	例如：
+    		Xml 檔定義為「android:layout_height="@dimen/ul_ui_dimen_33u"」
+    		Java 檔對應為「View.getLayoutParams().height = ul_uiDefine.getLayoutHeight(View.getLayoutParams().height);」
+    -->
+    <!-- 間隔定義 -->
+    <dimen name="ul_ui_dimen_layout_1u">1dp</dimen>
+    <dimen name="ul_ui_dimen_layout_3u">3dp</dimen>
+    <dimen name="ul_ui_dimen_layout_4u">4dp</dimen>
+    <dimen name="ul_ui_dimen_layout_5u">5dp</dimen>
+    <dimen name="ul_ui_dimen_layout_7u">7dp</dimen>
+    <dimen name="ul_ui_dimen_layout_8u">8dp</dimen>
+    <dimen name="ul_ui_dimen_layout_10u">10dp</dimen>
+    <dimen name="ul_ui_dimen_layout_11u">11dp</dimen>
+    <dimen name="ul_ui_dimen_layout_12u">13dp</dimen>
+    <dimen name="ul_ui_dimen_layout_13u">13dp</dimen>
+    <dimen name="ul_ui_dimen_layout_14u">14dp</dimen>
+    <dimen name="ul_ui_dimen_layout_16u">16dp</dimen>
+    <dimen name="ul_ui_dimen_layout_17u">17dp</dimen>
+    <dimen name="ul_ui_dimen_layout_18u">18dp</dimen>
+    <dimen name="ul_ui_dimen_layout_19u">19dp</dimen>
+    <dimen name="ul_ui_dimen_layout_20u">20dp</dimen>
+    <dimen name="ul_ui_dimen_layout_21u">21dp</dimen>
+    <dimen name="ul_ui_dimen_layout_22u">22dp</dimen>
+    <dimen name="ul_ui_dimen_layout_24u">24dp</dimen>
+    <dimen name="ul_ui_dimen_layout_25u">25dp</dimen>
+    <dimen name="ul_ui_dimen_layout_28u">28dp</dimen>
+    <dimen name="ul_ui_dimen_layout_30u">30dp</dimen>
+    <dimen name="ul_ui_dimen_layout_31u">31dp</dimen>
+    <dimen name="ul_ui_dimen_layout_33u">33dp</dimen>
+    <dimen name="ul_ui_dimen_layout_35u">35dp</dimen>
+    <dimen name="ul_ui_dimen_layout_37u">37dp</dimen>
+    <dimen name="ul_ui_dimen_layout_38u">38dp</dimen>
+    <dimen name="ul_ui_dimen_layout_40u">40dp</dimen>
+    <dimen name="ul_ui_dimen_layout_42u">42dp</dimen>
+    <dimen name="ul_ui_dimen_layout_43u">43dp</dimen>
+    <dimen name="ul_ui_dimen_layout_46u">46dp</dimen>
+    <dimen name="ul_ui_dimen_layout_48u">48dp</dimen>
+    <dimen name="ul_ui_dimen_layout_50u">50dp</dimen>
+    <dimen name="ul_ui_dimen_layout_54u">54dp</dimen>
+    <dimen name="ul_ui_dimen_layout_55u">55dp</dimen>
+    <dimen name="ul_ui_dimen_layout_56u">56dp</dimen>
+    <dimen name="ul_ui_dimen_layout_59u">59dp</dimen>
+    <dimen name="ul_ui_dimen_layout_60u">60dp</dimen>
+    <dimen name="ul_ui_dimen_layout_61u">61dp</dimen>
+    <dimen name="ul_ui_dimen_layout_62u">62dp</dimen>
+    <dimen name="ul_ui_dimen_layout_63u">63dp</dimen>
+    <dimen name="ul_ui_dimen_layout_65u">65dp</dimen>
+    <dimen name="ul_ui_dimen_layout_66u">66dp</dimen>
+    <dimen name="ul_ui_dimen_layout_67u">67dp</dimen>
+    <dimen name="ul_ui_dimen_layout_68u">68dp</dimen>
+    <dimen name="ul_ui_dimen_layout_69u">69dp</dimen>
+    <dimen name="ul_ui_dimen_layout_70u">70dp</dimen>
+    <dimen name="ul_ui_dimen_layout_71u">71dp</dimen>
+    <dimen name="ul_ui_dimen_layout_72u">72dp</dimen>
+    <dimen name="ul_ui_dimen_layout_73u">73dp</dimen>
+    <dimen name="ul_ui_dimen_layout_77u">77dp</dimen>
+    <dimen name="ul_ui_dimen_layout_78u">78dp</dimen>
+    <dimen name="ul_ui_dimen_layout_81u">81dp</dimen>
+    <dimen name="ul_ui_dimen_layout_88u">88dp</dimen>
+    <dimen name="ul_ui_dimen_layout_89u">89dp</dimen>
+    <dimen name="ul_ui_dimen_layout_92u">92dp</dimen>
+    <dimen name="ul_ui_dimen_layout_120u">120dp</dimen>
+    <dimen name="ul_ui_dimen_layout_300u">300dp</dimen>
+
+    <!-- 字型定義，內容需同 ul_uiDefine 字型定義 -->
+    <dimen name="ul_ui_dimen_fontSize_10u">10dp</dimen>
+    <dimen name="ul_ui_dimen_fontSize_11u">11dp</dimen>
+    <dimen name="ul_ui_dimen_fontSize_12u">12dp</dimen>
+    <dimen name="ul_ui_dimen_fontSize_13u">13dp</dimen>
+    <dimen name="ul_ui_dimen_fontSize_14u">14dp</dimen>
+    <dimen name="ul_ui_dimen_fontSize_15u">15dp</dimen>
+    <dimen name="ul_ui_dimen_fontSize_16u">16dp</dimen>
+    <dimen name="ul_ui_dimen_fontSize_30u">30dp</dimen>
+</resources>

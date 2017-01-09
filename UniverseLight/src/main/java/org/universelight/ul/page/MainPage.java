@@ -42,8 +42,7 @@ import org.universelight.ul.util.Util;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class MainPage extends AppCompatActivity implements View.OnClickListener, CardViewGetID.CardOnClickListener, CardViewGetDeleteID.CardOnDeleteClickListener{
-    public Context mPage;
+public class MainPage extends BaseActivity implements View.OnClickListener, CardViewGetID.CardOnClickListener, CardViewGetDeleteID.CardOnDeleteClickListener{
 
     public static final int FAB_DIALOG_NO_DATA = 0;
     public static final int FAB_DIALOG_WITH_DATA = 1;
@@ -56,14 +55,12 @@ public class MainPage extends AppCompatActivity implements View.OnClickListener,
 
     public static String TAB_TITLE = "零用金明細";
     public HashMap<String, String> m_hmData = null;
-    private MobileGlobalVariable mgv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPage = MainPage.this;
-        mgv = (MobileGlobalVariable) mPage.getApplicationContext();
+        initVariables(MainPage.this);
 
         setContentView(R.layout.activity_main_page);
 

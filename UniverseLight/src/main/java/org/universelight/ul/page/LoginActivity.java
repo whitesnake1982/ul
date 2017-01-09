@@ -38,6 +38,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,17 +48,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.universelight.ul.R;
+import org.universelight.ul.objects.MobileGlobalVariable;
+import org.universelight.ul.ui.ULUIDefine;
 import org.universelight.ul.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static org.universelight.ul.ui.ULUIDefine.FontSize_5u;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View
+public class LoginActivity extends BaseActivity implements LoaderCallbacks<Cursor>, View
         .OnTouchListener
 {
 
@@ -74,7 +78,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     FirebaseAuth                   auth;
     FirebaseAuth.AuthStateListener authStateListener;
 
-
     // FingerPrint
     private KeyguardManager    km;
     private FingerprintManager fm;
@@ -82,6 +85,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private boolean canUseFingerPrint = false;
     private Dialog                          dialog;
     private FingerprintManager.CryptoObject cryptoObject;
+    private FingerprintManager.AuthenticationCallback mAuthenticationCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -91,6 +95,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //改由manifest設定
 //        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE |
 //                WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        initVariables(LoginActivity.this);
 
         final SharedPreferences LoginStatus = getSharedPreferences("USER", MODE_PRIVATE);
 
@@ -170,7 +176,36 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         if (canUseFingerPrint && fingerPrintStatus.equals("1"))
         {
+            mAuthenticationCallback
+                    = new FingerprintManager.AuthenticationCallback()
+            {
+                @Override
+                public void onAuthenticationError(int errorCode, CharSequence errString)
+                {
+                    Log.e("finger print", "error " + errorCode + " " + errString);
+                    dialog.dismiss();
+                }
 
+                @Override
+                public void onAuthenticationFailed()
+                {
+                    Log.e("finger print", "onAuthenticationFailed");
+                    dialog.dismiss();
+                }
+
+                @Override
+                public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)
+                {
+                    Log.i("finger print", "onAuthenticationSucceeded");
+
+                    dialog.dismiss();
+
+                    SharedPreferences LoginStatus = getSharedPreferences("USER", MODE_PRIVATE);
+                    showProgress(true);
+                    fireBaseLogin(LoginStatus.getString("AuthMail", ""), LoginStatus.getString("AuthPW",
+                            ""));
+                }
+            };
 
             dialog = new Dialog(this);
             dialog.setContentView(R.layout.dialog_fingerprint_login);
@@ -190,6 +225,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             startFingerprintListening();
         }
 
+
+        ImageView img = (ImageView) findViewById(R.id.imageView);
+
+        img.getLayoutParams().width = mUIDefine.getLayoutWidth(45);
+        img.getLayoutParams().height = mUIDefine.getLayoutWidth(45);
+
+        mEmailView.getLayoutParams().width = mUIDefine.getLayoutWidth(100);
+        mEmailView.getLayoutParams().height = mUIDefine.getLayoutWidth(10);
+        mUIDefine.setTextSize(FontSize_5u, mEmailView);
+
+        mPasswordView.getLayoutParams().width = mUIDefine.getLayoutWidth(100);
+        mPasswordView.getLayoutParams().height = mUIDefine.getLayoutWidth(10);
+        mUIDefine.setTextSize(FontSize_5u, mEmailView);
+
+        mProgressView.getLayoutParams().width = mUIDefine.getLayoutWidth(25);
+        mProgressView.getLayoutParams().height = mUIDefine.getLayoutWidth(25);
     }
 
     private void startFingerprintListening()
@@ -208,6 +259,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             {
                 cryptoObject =
                         new FingerprintManager.CryptoObject(Util.getCipher());
+
                 fm.authenticate(cryptoObject,
                         /** crypto objects 的 wrapper class，可以透過它讓驗證過程更為安全，但也可以不使用。*/
                         cancellationSignal,
@@ -224,38 +276,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         }
     }
-
-    FingerprintManager.AuthenticationCallback mAuthenticationCallback
-            = new FingerprintManager.AuthenticationCallback()
-    {
-        @Override
-        public void onAuthenticationError(int errorCode, CharSequence errString)
-        {
-            Log.e("finger print", "error " + errorCode + " " + errString);
-            dialog.dismiss();
-        }
-
-        @Override
-        public void onAuthenticationFailed()
-        {
-            Log.e("finger print", "onAuthenticationFailed");
-            dialog.dismiss();
-        }
-
-        @Override
-        public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)
-        {
-            Log.i("finger print", "onAuthenticationSucceeded");
-
-            dialog.dismiss();
-
-            SharedPreferences LoginStatus = getSharedPreferences("USER", MODE_PRIVATE);
-            showProgress(true);
-            fireBaseLogin(LoginStatus.getString("AuthMail", ""), LoginStatus.getString("AuthPW",
-                    ""));
-        }
-    };
-
 
     private void populateAutoComplete()
     {
@@ -381,7 +401,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if (!task.isSuccessful())
                 {
                     showProgress(false);
-                    Util.showLog(LoginActivity.this, "登入失敗");
+                    Util.showLog(mPage, "登入失敗");
                 }
                 else
                 {
@@ -389,7 +409,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     mPasswordView.setText("");
 
                     Intent intent = new Intent();
-                    intent.setClass(LoginActivity.this, MainPage.class);
+                    intent.setClass(mPage, MainPage.class);
                     startActivity(intent);
                     finish();
                 }
@@ -495,7 +515,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
+                new ArrayAdapter<>(mPage,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
