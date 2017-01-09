@@ -197,8 +197,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         cancellationSignal = new CancellationSignal();
 
         if (checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PackageManager
-                .PERMISSION_GRANTED) //In SDK 23, we need to check the permission before we call
-        // FingerprintManager API functionality.
+                .PERMISSION_GRANTED)
+        /** In SDK 23, we need to check the permission before we call FingerprintManager API functionality.*/
+
         {
 
             Util.generateKey();
@@ -207,13 +208,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             {
                 cryptoObject =
                         new FingerprintManager.CryptoObject(Util.getCipher());
-                fm.authenticate(cryptoObject, //crypto objects 的 wrapper class，可以透過它讓
-                        // authenticate 過程更為安全，但也可以不使用。
-                        cancellationSignal, //用來取消 authenticate 的 object
-                        0, //optional flags; should be 0
-                        mAuthenticationCallback, //callback 用來接收 authenticate 成功與否，有三個 callback
-                        // method
-                        null); //optional 的參數，如果有使用，FingerprintManager 會透過它來傳遞訊息
+                fm.authenticate(cryptoObject,
+                        /** crypto objects 的 wrapper class，可以透過它讓驗證過程更為安全，但也可以不使用。*/
+                        cancellationSignal,
+                        /** 用來取消 authenticate 的 object*/
+                        0,
+                        /** optional flags; should be 0*/
+                        mAuthenticationCallback,
+                        /** callback 用來接收 authenticate 成功與否，有三個 callback method*/
+                        null
+                        /** optional 的參數，如果有使用，FingerprintManager 會透過它來傳遞訊息*/
+                );
             }
 
 

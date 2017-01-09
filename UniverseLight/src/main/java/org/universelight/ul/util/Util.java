@@ -83,11 +83,27 @@ public class Util
     }
 
     public static boolean checkFingerPrintService(Context c, KeyguardManager km, FingerprintManager fm) {
+
+        /**
+         * KeyManager.isKeyguardSecure()：是否有設定screen lock
+         * FingerprintManager.isHardwareDetected()：硬體是否有指紋辨識
+         * FingerprintManager.hasEnrolledFingerprints()：是否有設定最少一枚指紋
+         * */
+
         return km.isKeyguardSecure() && fm.isHardwareDetected() && fm.hasEnrolledFingerprints();
     }
 
     public static boolean cipherInit() {
         try {
+
+            /**
+             * KeyProperties.KEY_ALGORITHM_AES
+             * KeyProperties.BLOCK_MODE_CBC
+             * KeyProperties.ENCRYPTION_PADDING_PKCS7)
+             * SecretKey:javax.crypto
+             * requires API Level 23
+             */
+
             cipher = Cipher.getInstance(
                     KeyProperties.KEY_ALGORITHM_AES + "/"
                             + KeyProperties.BLOCK_MODE_CBC + "/"
