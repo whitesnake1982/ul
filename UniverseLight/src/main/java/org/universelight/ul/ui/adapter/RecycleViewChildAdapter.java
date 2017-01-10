@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,7 +101,7 @@ public class RecycleViewChildAdapter extends RecyclerView.Adapter<RecycleViewChi
         ULUIDefine mUIDefine = ULUIDefine.getInstance(m_Context);
 
         mUIDefine.setTextSize(FontSize_8u, tvChildTitle);
-        mUIDefine.setTextSize(FontSize_8u, tvBtnDelete);
+        mUIDefine.setTextSize(FontSize_6u, tvBtnDelete);
         mUIDefine.setTextSize(FontSize_6u, tvDateValue);
         mUIDefine.setTextSize(FontSize_6u, tvDateTitle);
         mUIDefine.setTextSize(FontSize_6u, tvCostNOValue);
@@ -114,6 +115,7 @@ public class RecycleViewChildAdapter extends RecyclerView.Adapter<RecycleViewChi
         String strMonth;
         int income = 0;
         int outcome = 0;
+        String strHtml;
 
         for(int j = 0; j < alData.size(); j++)
         {
@@ -136,12 +138,24 @@ public class RecycleViewChildAdapter extends RecyclerView.Adapter<RecycleViewChi
                     "\n餘額：" + String.valueOf(income - outcome) +
                     "\n項目：" + alData.get(listPosition).get("Description") + " - " + alData.get(listPosition).get
                     ("IncomeType");
+
+            strHtml = "<html><body><a><font color=\"#125688\">" + alData.get(listPosition).get("Month") + "月收支" + "</a>" +
+                    "<a><font color=\"#125688\">" + "<br>餘額：" + String.valueOf(income - outcome) + "</a><br>" +
+                    "<br>項目：" + alData.get(listPosition).get("Description") + " - " + alData.get(listPosition).get
+                    ("IncomeType") + "</body></html>";
+//            textView.setText(Html.fromHtml(html1));
+
         }
         else
         {
             strMonth = alData.get(listPosition).get("Month") + "月收支" +
                     "\n餘額：" + String.valueOf(income - outcome) +
                     "\n項目：" + alData.get(listPosition).get("Description");
+
+            strHtml = "<html><body><a><font color=\"#125688\">" + alData.get(listPosition).get("Month") + "月收支" + "</a>" +
+                    "<a><font color=\"#125688\">" + "<br>餘額：" + String.valueOf(income - outcome) + "</a><br>" +
+                    "<br>項目：" + alData.get(listPosition).get("Description") + "</body></html>";
+
         }
 
 
@@ -164,13 +178,17 @@ public class RecycleViewChildAdapter extends RecyclerView.Adapter<RecycleViewChi
             }
             else
             {
-                tvChildTitle.setText(strMonth);
+//                tvChildTitle.setText(strMonth);
+                tvChildTitle.setText(Html.fromHtml(strHtml));
             }
         }
         else
         {
-            tvChildTitle.setText(strMonth);
+//            tvChildTitle.setText(strMonth);
+            tvChildTitle.setText(Html.fromHtml(strHtml));
         }
+
+
         tvDateValue.setText(alData.get(listPosition).get("Date"));
         tvCostNOValue.setText(alData.get(listPosition).get("CostNo"));
 

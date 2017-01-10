@@ -1,6 +1,7 @@
 package org.universelight.ul.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -287,6 +288,7 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
         ULUIDefine mUIDefine = ULUIDefine.getInstance(m_Context);
         textViewName.setText(alYearList.get(listPosition));
         mUIDefine.setTextSize(FontSize_10u, textViewName);
+        textViewName.setTextColor(Color.parseColor("#FF4081"));
 
         recyclerView.setLayoutManager(new CustomLinearLayoutManager(m_Context));
 
