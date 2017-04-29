@@ -8,6 +8,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import org.universelight.ul.R;
 import org.universelight.ul.ui.ULUIDefine;
@@ -23,36 +24,37 @@ import static org.universelight.ul.ui.ULUIDefine.FontSize_8u;
 /**
  * Created by hsinheng on 16/7/19.
  */
-public class RecycleViewChildAdapter extends RecyclerView.Adapter<RecycleViewChildAdapter
+class RecycleViewChildAdapter extends RecyclerView.Adapter<RecycleViewChildAdapter
         .ChildViewHolder>
 {
 
     private ArrayList<HashMap<String, String>> alData;
-    private Context                            m_Context;
 
-    public RecycleViewChildAdapter(Context c, ArrayList<HashMap<String, String>> hashMaps)
+    private static ULUIDefine mUIDefine;
+
+    RecycleViewChildAdapter(Context c, ArrayList<HashMap<String, String>> hashMaps)
     {
-        this.m_Context = c;
         this.alData = hashMaps;
+        mUIDefine = ULUIDefine.getInstance(c);
     }
 
-    public static class ChildViewHolder extends RecyclerView.ViewHolder
+    static class ChildViewHolder extends RecyclerView.ViewHolder
     {
 
         CardView cvCard;
+        LinearLayout llContent;
         TextView tvChildTitle;
-        TextView tvCBtnDelete;
         TextView tvDateValue, tvDateTitle;
         TextView tvCostNOValue, tvCostNOTitle;
         TextView tvTypeValue, tvTypeTitle;
         TextView tvCostValue, tvCostTitle;
 
-        public ChildViewHolder(View itemView)
+        ChildViewHolder(View itemView)
         {
             super(itemView);
             this.cvCard = (CardView) itemView.findViewById(R.id.card_view);
+            this.llContent = (LinearLayout) itemView.findViewById(R.id.ll_content);
             this.tvChildTitle = (TextView) itemView.findViewById(R.id.tv_child_title);
-            this.tvCBtnDelete = (TextView) itemView.findViewById(R.id.tv_btn_delete);
             this.tvDateValue = (TextView) itemView.findViewById(R.id.tv_child_date_value);
             this.tvDateTitle = (TextView) itemView.findViewById(R.id.tv_child_date_title);
             this.tvCostNOValue = (TextView) itemView.findViewById(R.id.tv_child_cost_number_value);
@@ -71,24 +73,14 @@ public class RecycleViewChildAdapter extends RecyclerView.Adapter<RecycleViewChi
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycleview_child, parent, false);
 
-        view.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-            }
-        });
-
         return new ChildViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ChildViewHolder holder, final int listPosition)
+    public void onBindViewHolder(ChildViewHolder holder, int listPosition)
     {
         final CardView cvCard        = holder.cvCard;
         TextView       tvChildTitle  = holder.tvChildTitle;
-        TextView       tvBtnDelete   = holder.tvCBtnDelete;
         TextView       tvDateValue   = holder.tvDateValue;
         TextView       tvDateTitle   = holder.tvDateTitle;
         TextView       tvCostNOValue = holder.tvCostNOValue;
@@ -98,10 +90,7 @@ public class RecycleViewChildAdapter extends RecyclerView.Adapter<RecycleViewChi
         TextView       tvCostValue   = holder.tvCostValue;
         TextView       tvCostTitle   = holder.tvCostTitle;
 
-        ULUIDefine mUIDefine = ULUIDefine.getInstance(m_Context);
-
         mUIDefine.setTextSize(FontSize_8u, tvChildTitle);
-        mUIDefine.setTextSize(FontSize_6u, tvBtnDelete);
         mUIDefine.setTextSize(FontSize_6u, tvDateValue);
         mUIDefine.setTextSize(FontSize_6u, tvDateTitle);
         mUIDefine.setTextSize(FontSize_6u, tvCostNOValue);
@@ -116,6 +105,8 @@ public class RecycleViewChildAdapter extends RecyclerView.Adapter<RecycleViewChi
         int income = 0;
         int outcome = 0;
         String strHtml;
+
+        final int iPosition = listPosition;
 
         for(int j = 0; j < alData.size(); j++)
         {
@@ -217,16 +208,17 @@ public class RecycleViewChildAdapter extends RecyclerView.Adapter<RecycleViewChi
             @Override
             public void onClick(View v)
             {
-                CardViewGetID.cardOnClickListener.OnClickListener(alData.get(listPosition));
+                CardViewGetID.cardOnClickListener.OnClickListener(alData.get(iPosition));
             }
         });
 
-        tvBtnDelete.setOnClickListener(new View.OnClickListener()
+        cvCard.setOnLongClickListener(new View.OnLongClickListener()
         {
             @Override
-            public void onClick(View v)
+            public boolean onLongClick(View v)
             {
-                CardViewGetDeleteID.cardOnDeleteClickListener.OnDeleteClickListener(alData.get(listPosition));
+                CardViewGetDeleteID.cardOnDeleteClickListener.OnDeleteClickListener(alData.get(iPosition));
+                return true;
             }
         });
     }

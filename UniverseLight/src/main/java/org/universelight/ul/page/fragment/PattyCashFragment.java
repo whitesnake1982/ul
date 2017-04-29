@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import com.firebase.client.Firebase;
 
 import org.universelight.ul.R;
+import org.universelight.ul.objects.MobileGlobalVariable;
 import org.universelight.ul.ui.adapter.RecycleViewGroupAdapter;
 
 /**
@@ -26,8 +27,7 @@ public class PattyCashFragment extends Fragment {
      */
     public static String PATTY_CASH_REF = "https://universelight-e10c7.firebaseio.com/PattyCash";
 
-    private RecyclerView m_RecyclerView;
-    private ProgressBar m_ProgressBar;
+    private MobileGlobalVariable mgv;
 
     public PattyCashFragment() {
     }
@@ -46,18 +46,22 @@ public class PattyCashFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_patty_cash_recycleview, container, false);
 
-        m_RecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+
+        RecyclerView m_RecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         m_RecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         m_RecyclerView.setHasFixedSize(true);
         m_RecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        m_ProgressBar = (ProgressBar) rootView.findViewById(R.id.progress_bar);
+        ProgressBar m_ProgressBar = (ProgressBar) rootView.findViewById(R.id.progress_bar);
         m_ProgressBar.setVisibility(View.VISIBLE);
+
+        mgv = (MobileGlobalVariable) getActivity().getApplicationContext();
 
         Firebase.setAndroidContext(getContext());
         Firebase ref = new Firebase(PATTY_CASH_REF);
-        RecycleViewGroupAdapter adapter = new RecycleViewGroupAdapter(getActivity(), ref, m_ProgressBar);
+        RecycleViewGroupAdapter adapter = new RecycleViewGroupAdapter(getActivity(), ref, m_ProgressBar, mgv.strSearchYear, mgv.strSearchMonth);
+
         m_RecyclerView.setAdapter(adapter);
 
         return rootView;

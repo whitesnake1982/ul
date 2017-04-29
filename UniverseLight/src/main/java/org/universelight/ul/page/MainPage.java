@@ -55,6 +55,7 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
 
     public static String TAB_TITLE = "零用金明細";
     public HashMap<String, String> m_hmData = null;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,32 +77,55 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
         CardViewGetDeleteID cardViewGetDeleteID = new CardViewGetDeleteID();
         cardViewGetDeleteID.setCardOnDeleteClickListener(this);
 
+//        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mSectionsPagerAdapter.addFragment(PattyCashFragment.newInstance(), getString(R.string.activity_main_page_title_pc));
         mSectionsPagerAdapter.addFragment(CashFragment.newInstance(), getString(R.string.activity_main_page_title_c));
         mSectionsPagerAdapter.addFragment(EstateFragment.newInstance(), getString(R.string.activity_main_page_title_e));
 
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (position != onPageScrolledPrePosition) {
-                    onPageScrolledPrePosition = position;
-                }
+
             }
 
             @Override
             public void onPageSelected(int position) {
+                onPageScrolledPrePosition = position;
+                mViewPager.setCurrentItem(onPageScrolledPrePosition);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
+
             }
         });
 
         TabLayout mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener()
+        {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab)
+            {
+                onPageScrolledPrePosition = tab.getPosition();
+                mViewPager.setCurrentItem(onPageScrolledPrePosition);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab)
+            {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab)
+            {
+
+            }
+        });
     }
 
     @Override
@@ -113,9 +137,7 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         if (id == R.id.action_search) {
@@ -127,6 +149,13 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
                     mgv.strSearchYear = "";
                     mgv.strSearchMonth = "";
                     FilterCondition.onSearchConditionListener.getSearchOptions(mgv.strSearchYear, mgv.strSearchMonth);
+                    SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+                    mSectionsPagerAdapter.addFragment(PattyCashFragment.newInstance(), getString(R.string.activity_main_page_title_pc));
+                    mSectionsPagerAdapter.addFragment(CashFragment.newInstance(), getString(R.string.activity_main_page_title_c));
+                    mSectionsPagerAdapter.addFragment(EstateFragment.newInstance(), getString(R.string.activity_main_page_title_e));
+
+                    mViewPager.setAdapter(mSectionsPagerAdapter);
+                    mViewPager.setCurrentItem(onPageScrolledPrePosition);
                 }
             });
             dpd.show();
@@ -176,8 +205,16 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
                 switch (id)
                 {
                     case R.id.action_search:
-                        //TODO 搜尋對應處理
+
                         FilterCondition.onSearchConditionListener.getSearchOptions(mgv.strSearchYear, mgv.strSearchMonth);
+                        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+                        mSectionsPagerAdapter.addFragment(PattyCashFragment.newInstance(), getString(R.string.activity_main_page_title_pc));
+                        mSectionsPagerAdapter.addFragment(CashFragment.newInstance(), getString(R.string.activity_main_page_title_c));
+                        mSectionsPagerAdapter.addFragment(EstateFragment.newInstance(), getString(R.string.activity_main_page_title_e));
+
+                        mViewPager.setAdapter(mSectionsPagerAdapter);
+                        mViewPager.setCurrentItem(onPageScrolledPrePosition);
+
                         break;
                     case R.id.action_output:
                         //TODO PDF輸出處理

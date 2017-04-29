@@ -30,55 +30,120 @@ import java.util.HashMap;
 
 import static org.universelight.ul.ui.ULUIDefine.FontSize_10u;
 
-/**
- * Created by hsinheng on 16/7/19.
- */
 public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGroupAdapter
         .MyViewHolder> implements FilterCondition.OnSearchConditionListener
 {
-    private ArrayList<HashMap<String, String>>                  alData              = new
+    private ArrayList<HashMap<String, String>> alData     = new
             ArrayList<>();
-    private ArrayList<String>                                   alYearList          = new
+    private ArrayList<String>                  alYearList = new
             ArrayList<>();
+
+    private ArrayList<HashMap<String, String>> alSearchData = new
+            ArrayList<>();
+
     private HashMap<String, ArrayList<HashMap<String, String>>> hmYearDataArrayList = new
             HashMap<>();
-    private Context m_Context;
+    private Context              m_Context;
     private MobileGlobalVariable mgv;
-    private Firebase fbRef;
-    private ProgressBar pb;
+    private ProgressBar          pb;
+
+    private String searchY = "";
+    private String searchM = "";
 
     @Override
-    public void getSearchOptions(final String sYear, final String sMonth) {
-        pb.setVisibility(View.VISIBLE);
-        //TODO 取過濾資料
-        Log.e("query:" , "Year-" + sYear + "; Month-" + sMonth);
-        setFireBaseEvent(fbRef, sYear, sMonth);
-    }
-
-    private void setFireBaseEvent(Firebase fb, final String sYear, final String sMonth)
+    public void getSearchOptions(final String sYear, final String sMonth)
     {
-        fb.addValueEventListener(new ValueEventListener()
+        pb.setVisibility(View.VISIBLE);
+        searchY = sYear;
+        searchM = sMonth;
+
+        if(!sYear.equals(""))
         {
-            public void onDataChange(DataSnapshot snapshot)
-            {
-                if(!sYear.equals("") && !sMonth.equals(""))
-                {
-                    getSearchData(snapshot, sYear, sMonth);
-                }
-                else
-                {
-                    getAllData(snapshot);
-                }
-            }
+            getSearchData();
+        }
+        else
+        {
+            resetSearchData();
+        }
+    }
 
-            public void onCancelled(FirebaseError firebaseError)
-            {
+    private void resetSearchData()
+    {
+        alData = new ArrayList<>(mgv.alData);
+        alYearList.clear();
+        alYearList = new ArrayList<>(mgv.alYearList);
+        hmYearDataArrayList.clear();
+        hmYearDataArrayList = new HashMap<>(mgv.hmYearDataArrayList);
 
-            }
-        });
 
+        notifyDataSetChanged();
+        pb.setVisibility(View.GONE);
 
     }
+
+    private void getSearchData()
+    {
+        alData = new ArrayList<>(mgv.alData);
+        alSearchData.clear();
+        hmYearDataArrayList .clear();
+        alYearList.clear();
+
+        for (HashMap<String, String> hm : alData)
+        {
+            if (hm.get("Year").equals(searchY))
+            {
+                if (hm.get("Month").equals(searchM))
+                {
+                    HashMap<String, String> hmtp = new HashMap<>();
+                    hmtp.put("CostNo", hm.get("CostNo"));
+                    hmtp.put("Cost", hm.get("Cost"));
+                    hmtp.put("Description", hm.get("Description"));
+                    hmtp.put("Date", hm.get("Date"));
+                    hmtp.put("Type", hm.get("Type"));
+                    hmtp.put("Month", hm.get("Month"));
+                    hmtp.put("Year", hm.get("Year"));
+                    hmtp.put("ID", hm.get("ID"));
+
+                    if (hm.containsKey("IncomeType"))
+                    {
+                        hmtp.put("IncomeType", hm.get("IncomeType"));
+                    }
+
+                    alSearchData.add(hmtp);
+                }
+            }
+        }
+
+        alData = new ArrayList<>(alSearchData);
+        alYearList.add(searchY);
+
+        ArrayList<HashMap<String, String>> tempData = new ArrayList<>();//日期
+        ArrayList<String> alDate = new ArrayList<>();
+
+        for (HashMap<String, String> hm : alData)
+        {
+            alDate.add(hm.get("Date"));
+        }
+
+        compareArrayList(alDate);
+
+        for (String s3 : alDate)
+        {
+            for (HashMap<String, String> hm : alData)
+            {
+                if (s3.equals(hm.get("Date")))
+                {
+                    tempData.add(hm);
+                }
+            }
+        }
+
+        hmYearDataArrayList.put(searchY, tempData);
+
+        notifyDataSetChanged();
+        pb.setVisibility(View.GONE);
+    }
+
 
     static class MyViewHolder extends RecyclerView.ViewHolder
     {
@@ -94,17 +159,58 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
         }
     }
 
-    public RecycleViewGroupAdapter(Context c, Firebase ref, final ProgressBar pb)
+    public RecycleViewGroupAdapter(Context c, Firebase ref, final ProgressBar pb, String sY, String sM)
     {
 
         this.m_Context = c;
-        this.fbRef = ref;
         this.pb = pb;
+        this.searchY = sY;
+        this.searchM = sM;
+
         mgv = (MobileGlobalVariable) m_Context.getApplicationContext();
 
         FilterCondition fc = new FilterCondition();
         fc.setOnSearchConditionListener(this);
-        setFireBaseEvent(ref, "", "");
+
+        ref.addValueEventListener(new ValueEventListener()
+        {
+            public void onDataChange(DataSnapshot snapshot)
+            {
+                if (!searchY.equals("") && !searchM.equals(""))
+                {
+                    getSearchData(snapshot, searchY, searchM);
+                }
+                else
+                {
+                    getAllData(snapshot);
+                }
+            }
+
+            public void onCancelled(FirebaseError firebaseError)
+            {
+
+            }
+        });
+
+        if(!searchY.equals(""))
+        {
+            getSearchData();
+        }
+        else
+        {
+            getAllData();
+        }
+    }
+
+    private void getAllData()
+    {
+        alData = new ArrayList<>(mgv.alData);
+        alSearchData.clear();
+        hmYearDataArrayList = new HashMap<>(mgv.hmYearDataArrayList);
+        alYearList = new ArrayList<>(mgv.alYearList);
+
+        notifyDataSetChanged();
+        pb.setVisibility(View.GONE);
     }
 
     private void getAllData(DataSnapshot snapshot)
@@ -141,11 +247,36 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
     private void getSearchData(DataSnapshot snapshot, String sYear, String sMonth)
     {
         alData.clear();
+        for (DataSnapshot dataSnapshot : snapshot.getChildren())
+        {
+            if (dataSnapshot.child("Year").getValue().toString().equals(sYear) && dataSnapshot
+                    .child("Month").getValue().toString().equals(sMonth))
+            {
+                HashMap<String, String> hmtp = new HashMap<>();
+                hmtp.put("CostNo", dataSnapshot.child("CostNo").getValue().toString());
+                hmtp.put("Cost", dataSnapshot.child("Cost").getValue().toString());
+                hmtp.put("Description", dataSnapshot.child("Description").getValue().toString
+                        ());
+                hmtp.put("Date", dataSnapshot.child("Date").getValue().toString());
+                hmtp.put("Type", dataSnapshot.child("Type").getValue().toString());
+                hmtp.put("Month", dataSnapshot.child("Month").getValue().toString());
+                hmtp.put("Year", dataSnapshot.child("Year").getValue().toString());
+                hmtp.put("ID", dataSnapshot.child("ID").getValue().toString());
 
+                if (dataSnapshot.hasChild("IncomeType"))
+                {
+                    hmtp.put("IncomeType", dataSnapshot.child("IncomeType").getValue()
+                            .toString());
+                }
+
+                alData.add(hmtp);
+            }
+        }
+
+        sortData();
+        notifyDataSetChanged();
         pb.setVisibility(View.GONE);
     }
-
-
 
     private void sortData()
     {
@@ -185,7 +316,7 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
         for (String s1 : alYearList)
         {
 
-            ArrayList<HashMap<String, String>> alTemp   = new ArrayList<>();//年份
+            ArrayList<HashMap<String, String>> alTemp    = new ArrayList<>();//年份
             ArrayList<HashMap<String, String>> tempData1 = new ArrayList<>();//月份
             ArrayList<HashMap<String, String>> tempData2 = new ArrayList<>();//日期
 
@@ -266,15 +397,6 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycleview_group, parent, false);
 
-        view.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-            }
-        });
-
         return new MyViewHolder(view);
     }
 
@@ -291,7 +413,6 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
         textViewName.setTextColor(Color.parseColor("#FF4081"));
 
         recyclerView.setLayoutManager(new CustomLinearLayoutManager(m_Context));
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
