@@ -53,7 +53,7 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
     private FloatingActionButton fab;
     private int onPageScrolledPrePosition = -1;
 
-    public static String TAB_TITLE = "零用金明細";
+    public static String TAB_TITLE;
     public HashMap<String, String> m_hmData = null;
     private ViewPager mViewPager;
 
@@ -62,6 +62,8 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
         super.onCreate(savedInstanceState);
 
         initVariables(MainPage.this);
+
+        TAB_TITLE = mPage.getString(R.string.activity_main_page_title_pc);
 
         setContentView(R.layout.activity_main_page);
 
@@ -77,7 +79,6 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
         CardViewGetDeleteID cardViewGetDeleteID = new CardViewGetDeleteID();
         cardViewGetDeleteID.setCardOnDeleteClickListener(this);
 
-//        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mSectionsPagerAdapter.addFragment(PattyCashFragment.newInstance(), getString(R.string.activity_main_page_title_pc));
         mSectionsPagerAdapter.addFragment(CashFragment.newInstance(), getString(R.string.activity_main_page_title_c));
@@ -190,7 +191,7 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
 
                 mgv.strSearchYear = String.valueOf(year);
 
-                String month = "";
+                String month;
 
                 if(monthOfYear + 1 < 10)
                 {
@@ -246,7 +247,6 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
 
     @Override
     public void OnClickListener(HashMap<String, String> id) {
-        Log.e("HasClick" , id.get("ID"));
         m_hmData = id;
         fab.performClick();
     }
@@ -330,7 +330,7 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
 
         final HashMap hm = id;
 
-        Util.showConfirm(mPage, "\t\t項目\t：\t" + hm.get("Description") + "\n\t\t日期\t：\t" + hm.get("Date") + "\n\t\t單號\t：\t" + hm.get("CostNo") + "\n\n\t\t是否刪除此筆資料？" , new DialogInterface.OnClickListener()
+        Util.showConfirm(mPage, "\t\t" + mPage.getString(R.string.section_title) + "\t：\t" + hm.get("Description") + "\n\t\t" + mPage.getString(R.string.month_title) + "\t：\t" + hm.get("Date") + "\n\t\t" + mPage.getString(R.string.no_title) + "\t：\t" + hm.get("CostNo") , new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)

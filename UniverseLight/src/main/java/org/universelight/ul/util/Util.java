@@ -9,6 +9,8 @@ import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
 
+import org.universelight.ul.R;
+
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -37,11 +39,11 @@ public class Util
     public static void showLog(Context c, String msg)
     {
         AlertDialog.Builder dialog = new AlertDialog.Builder(c);
-        dialog.setTitle("注意");
+        dialog.setTitle(c.getString(R.string.common_dialog_title));
         dialog.setCancelable(false);
         dialog.create().setCanceledOnTouchOutside(false);
         dialog.setMessage(msg);
-        dialog.setPositiveButton("確定", new DialogInterface.OnClickListener()
+        dialog.setPositiveButton(c.getString(R.string.common_dialog_confirm), new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
@@ -55,23 +57,23 @@ public class Util
     public static void showLog(Context c, String msg, DialogInterface.OnClickListener listener)
     {
         AlertDialog.Builder dialog = new AlertDialog.Builder(c);
-        dialog.setTitle("注意");
+        dialog.setTitle(c.getString(R.string.common_dialog_title));
         dialog.setCancelable(false);
         dialog.create().setCanceledOnTouchOutside(false);
         dialog.setMessage(msg);
-        dialog.setPositiveButton("確定", listener);
+        dialog.setPositiveButton(c.getString(R.string.common_dialog_confirm), listener);
         dialog.show();
     }
 
     public static void showConfirm(Context c, String msg, DialogInterface.OnClickListener listener)
     {
         AlertDialog.Builder dialog = new AlertDialog.Builder(c);
-        dialog.setTitle("刪除選取項目");
+        dialog.setTitle(c.getString(R.string.dialog_delete_msg));
         dialog.setCancelable(false);
         dialog.create().setCanceledOnTouchOutside(false);
         dialog.setMessage(msg);
-        dialog.setPositiveButton("是", listener);
-        dialog.setNegativeButton("否", new DialogInterface.OnClickListener()
+        dialog.setPositiveButton(c.getString(R.string.common_dialog_yes), listener);
+        dialog.setNegativeButton(c.getString(R.string.common_dialog_no), new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
@@ -79,6 +81,7 @@ public class Util
                 dialog.cancel();
             }
         });
+
         dialog.show();
     }
 

@@ -177,19 +177,19 @@ public class FABDefault extends AppCompatActivity implements RadioGroup.OnChecke
 
     public boolean checkInputData(AppCompatActivity f, EditText m_etCost, EditText m_etDescription, TextView m_tvDate) {
         if (m_etDescription.getText().toString().equals("")) {
-            Util.showLog(f, "請輸入項目");
+            Util.showLog(f, getString(R.string.dialog_FABDefault_check_msg1));
             return false;
         } else if (m_strIncomeType.equals("") && m_iType == 3) {
-            Util.showLog(f, "請選擇活存、定存或利息");
+            Util.showLog(f, getString(R.string.dialog_FABDefault_check_msg2));
             return false;
         } else if (m_etCost.getText().toString().equals("")) {
-            Util.showLog(f, "請輸入金額");
+            Util.showLog(f, getString(R.string.dialog_FABDefault_check_msg3));
             return false;
-        } else if (m_tvDate.getText().toString().equals("請選擇")) {
-            Util.showLog(f, "請選擇日期");
+        } else if (m_tvDate.getText().toString().equals(getString(R.string.common_choose))) {
+            Util.showLog(f, getString(R.string.dialog_FABDefault_check_msg4));
             return false;
         } else if (m_strType.equals("")) {
-            Util.showLog(f, "請選擇收支類型");
+            Util.showLog(f, getString(R.string.dialog_FABDefault_check_msg5));
             return false;
         } else {
             return true;

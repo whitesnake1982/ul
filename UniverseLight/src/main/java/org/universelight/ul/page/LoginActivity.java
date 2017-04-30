@@ -26,7 +26,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -76,8 +75,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     FirebaseAuth                   auth;
     FirebaseAuth.AuthStateListener authStateListener;
 
-    // FingerPrint
-    private KeyguardManager    km;
     private FingerprintManager fm;
     private CancellationSignal cancellationSignal;
     private boolean canUseFingerPrint = false;
@@ -100,8 +97,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
         String fingerPrintStatus = LoginStatus.getString("FingerPrint", "0");
 
-        Log.e("fingerPrintStatus:", fingerPrintStatus);
-
         // Set up the login form.
         auth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener()
@@ -115,12 +110,10 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
                 if (user != null)
                 {
-                    Log.d("onAuthStateChanged", "登入");
                     LoginStatus.edit().putString("UID", user.getUid()).commit();
                 }
                 else
                 {
-                    Log.d("onAuthStateChanged", "已登出");
                     LoginStatus.edit().putString("UID", "").commit();
                 }
             }
@@ -163,13 +156,12 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
         try
         {
-            km = (KeyguardManager) getSystemService(Activity.KEYGUARD_SERVICE);
+            KeyguardManager km = (KeyguardManager) getSystemService(Activity.KEYGUARD_SERVICE);
             fm = getSystemService(FingerprintManager.class);
             canUseFingerPrint = Util.checkFingerPrintService(this, km, fm);
         }
-        catch (NoClassDefFoundError e)
+        catch (NoClassDefFoundError ignored)
         {
-            Log.e("NoClassDefFoundError", e.toString());
         }
 
         if (canUseFingerPrint && fingerPrintStatus.equals("1"))
@@ -180,21 +172,18 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                 @Override
                 public void onAuthenticationError(int errorCode, CharSequence errString)
                 {
-                    Log.e("finger print", "error " + errorCode + " " + errString);
                     dialog.dismiss();
                 }
 
                 @Override
                 public void onAuthenticationFailed()
                 {
-                    Log.e("finger print", "onAuthenticationFailed");
                     dialog.dismiss();
                 }
 
                 @Override
                 public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result)
                 {
-                    Log.i("finger print", "onAuthenticationSucceeded");
 
                     dialog.dismiss();
 
@@ -258,7 +247,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
         if (checkSelfPermission(Manifest.permission.USE_FINGERPRINT) == PackageManager
                 .PERMISSION_GRANTED)
-        /** In SDK 23, we need to check the permission before we call FingerprintManager API functionality.*/
+        /* In SDK 23, we need to check the permission before we call FingerprintManager API functionality.*/
 
         {
 
@@ -270,15 +259,15 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                         new FingerprintManager.CryptoObject(Util.getCipher());
 
                 fm.authenticate(cryptoObject,
-                        /** crypto objects 的 wrapper class，可以透過它讓驗證過程更為安全，但也可以不使用。*/
+                        /* crypto objects 的 wrapper class，可以透過它讓驗證過程更為安全，但也可以不使用。*/
                         cancellationSignal,
-                        /** 用來取消 authenticate 的 object*/
+                        /* 用來取消 authenticate 的 object*/
                         0,
-                        /** optional flags; should be 0*/
+                        /* optional flags; should be 0*/
                         mAuthenticationCallback,
-                        /** callback 用來接收 authenticate 成功與否，有三個 callback method*/
+                        /* callback 用來接收 authenticate 成功與否，有三個 callback method*/
                         null
-                        /** optional 的參數，如果有使用，FingerprintManager 會透過它來傳遞訊息*/
+                        /* optional 的參數，如果有使用，FingerprintManager 會透過它來傳遞訊息*/
                 );
             }
 
@@ -396,7 +385,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
     private void fireBaseLogin(String email, String password)
     {
-        Log.d("AUTH", email + "/" + password);
         SharedPreferences LoginStatus = getSharedPreferences("USER", MODE_PRIVATE);
         LoginStatus.edit().putString("AuthMail", email).apply();
         LoginStatus.edit().putString("AuthPW", password).apply();
@@ -410,7 +398,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                 if (!task.isSuccessful())
                 {
                     showProgress(false);
-                    Util.showLog(mPage, "登入失敗");
+                    Util.showLog(mPage, getString(R.string.dialog_login_fail_msg));
                 }
                 else
                 {
@@ -428,13 +416,11 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
     private boolean isEmailValid(String email)
     {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
     private boolean isPasswordValid(String password)
     {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
@@ -547,7 +533,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context
                 .INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        Log.d("Close", "keyboard");
     }
 
     private interface ProfileQuery

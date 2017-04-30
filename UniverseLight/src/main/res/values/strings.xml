@@ -24,6 +24,19 @@
     <string name="action_output">輸出PDF</string>
     <string name="action_option">設定</string>
 
+    <string name="common_choose">請選擇</string>
+    <string name="common_dialog_title">注意</string>
+    <string name="common_dialog_confirm">確定</string>
+    <string name="common_dialog_yes">是</string>
+    <string name="common_dialog_no">否</string>
+    <string name="common_test_text">測試用字串</string>
+
+
+    <string name="cardView_title1">日期：</string>
+    <string name="cardView_title2">單號：</string>
+    <string name="cardView_title3">類型：</string>
+    <string name="cardView_title4">金額：</string>
+
     <string name="button_save">儲存</string>
     <string name="button_cancel">取消</string>
     <string name="button_neutral">選擇全部</string>
@@ -53,16 +66,19 @@
     <string name="spinner_cash_dialog_prompt">請選擇細項</string>
     <string name="title_activity_patty_cash_dialog">PattyCashDialogActivity</string>
 
-    <!--設定頁-->
     <string name="dialog_setting_fingerprint_title">指紋辨識</string>
     <string name="dialog_query_title">請選擇查詢年、月份</string>
     <string name="dialog_output_title">請選擇輸出年、月份</string>
     <string name="dialog_setting_button_cancel">關閉</string>
-
-
+    <string name="dialog_delete_msg">是否刪除此筆資料？</string>
     <string name="dialog_fingerprint_button_cancel">取消</string>
     <string name="dialog_fingerprint_title">指紋驗證</string>
     <string name="dialog_fingerprint_msg">請將手指置於感應器以進行登入。</string>
-
+    <string name="dialog_login_fail_msg">登入失敗</string>
+    <string name="dialog_FABDefault_check_msg1">請輸入項目</string>
+    <string name="dialog_FABDefault_check_msg2">請選擇活存、定存或利息</string>
+    <string name="dialog_FABDefault_check_msg3">請輸入金額</string>
+    <string name="dialog_FABDefault_check_msg4">請選擇日期</string>
+    <string name="dialog_FABDefault_check_msg5">請選擇收支類型</string>
 
 </resources>

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -176,7 +175,7 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
         {
             public void onDataChange(DataSnapshot snapshot)
             {
-                if (!searchY.equals("") && !searchM.equals(""))
+                if (!searchY.equals(""))
                 {
                     getSearchData(snapshot, searchY, searchM);
                 }
@@ -292,25 +291,8 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
         //排序年份--ex:2016、2015、2014、2013
         compareArrayList(alYearList);
 
-        //月份清單放入alM
-        ArrayList<String> alM = new ArrayList<>();
-
-        int i = 12;
-        while (i > 0)
-        {
-            String s;
-            if (i < 10)
-            {
-                s = "0" + String.valueOf(i);
-            }
-            else
-            {
-                s = String.valueOf(i);
-            }
-            alM.add(s);
-            i = i - 1;
-        }
-
+        //月份清單放入strMonth
+        String[] strMonth = m_Context.getResources().getStringArray(R.array.month);
 
         //按年份塞入資料
         for (String s1 : alYearList)
@@ -329,7 +311,7 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
             }
 
             //按月份塞入資料
-            for (String s2 : alM)
+            for (String s2 : strMonth)
             {
                 for (HashMap<String, String> hm : alTemp)
                 {
