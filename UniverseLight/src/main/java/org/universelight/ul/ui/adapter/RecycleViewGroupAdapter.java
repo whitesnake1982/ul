@@ -74,7 +74,6 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
         hmYearDataArrayList.clear();
         hmYearDataArrayList = new HashMap<>(mgv.hmYearDataArrayList);
 
-
         notifyDataSetChanged();
         pb.setVisibility(View.GONE);
 
@@ -181,7 +180,8 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
                 }
                 else
                 {
-                    getAllData(snapshot);
+//                    getAllData(snapshot);
+                    getSearchData(snapshot, "", "");
                 }
             }
 
@@ -212,30 +212,39 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
         pb.setVisibility(View.GONE);
     }
 
-    private void getAllData(DataSnapshot snapshot)
+//    private void getAllData(DataSnapshot snapshot)
+//    {
+//        alData.clear();
+//        for (DataSnapshot dataSnapshot : snapshot.getChildren())
+//        {
+//            addToAlData(dataSnapshot);
+//        }
+//
+//        sortData();
+//        notifyDataSetChanged();
+//        pb.setVisibility(View.GONE);
+//    }
+
+    private void getSearchData(DataSnapshot snapshot, String sYear, String sMonth)
     {
         alData.clear();
-        for (DataSnapshot dataSnapshot : snapshot.getChildren())
+
+        if(sYear.equals(""))
         {
-
-            HashMap<String, String> hmtp = new HashMap<>();
-            hmtp.put("CostNo", dataSnapshot.child("CostNo").getValue().toString());
-            hmtp.put("Cost", dataSnapshot.child("Cost").getValue().toString());
-            hmtp.put("Description", dataSnapshot.child("Description").getValue().toString
-                    ());
-            hmtp.put("Date", dataSnapshot.child("Date").getValue().toString());
-            hmtp.put("Type", dataSnapshot.child("Type").getValue().toString());
-            hmtp.put("Month", dataSnapshot.child("Month").getValue().toString());
-            hmtp.put("Year", dataSnapshot.child("Year").getValue().toString());
-            hmtp.put("ID", dataSnapshot.child("ID").getValue().toString());
-
-            if (dataSnapshot.hasChild("IncomeType"))
+            for (DataSnapshot dataSnapshot : snapshot.getChildren())
             {
-                hmtp.put("IncomeType", dataSnapshot.child("IncomeType").getValue()
-                        .toString());
+                addToAlData(dataSnapshot);
             }
-
-            alData.add(hmtp);
+        }
+        else
+        {
+            for (DataSnapshot dataSnapshot : snapshot.getChildren())
+            {
+                if (dataSnapshot.child("Year").getValue().toString().equals(sYear) && dataSnapshot.child("Month").getValue().toString().equals(sMonth))
+                {
+                    addToAlData(dataSnapshot);
+                }
+            }
         }
 
         sortData();
@@ -243,38 +252,26 @@ public class RecycleViewGroupAdapter extends RecyclerView.Adapter<RecycleViewGro
         pb.setVisibility(View.GONE);
     }
 
-    private void getSearchData(DataSnapshot snapshot, String sYear, String sMonth)
+    private void addToAlData(DataSnapshot dataSnapshot)
     {
-        alData.clear();
-        for (DataSnapshot dataSnapshot : snapshot.getChildren())
+        HashMap<String, String> hmtp = new HashMap<>();
+        hmtp.put("CostNo", dataSnapshot.child("CostNo").getValue().toString());
+        hmtp.put("Cost", dataSnapshot.child("Cost").getValue().toString());
+        hmtp.put("Description", dataSnapshot.child("Description").getValue().toString
+                ());
+        hmtp.put("Date", dataSnapshot.child("Date").getValue().toString());
+        hmtp.put("Type", dataSnapshot.child("Type").getValue().toString());
+        hmtp.put("Month", dataSnapshot.child("Month").getValue().toString());
+        hmtp.put("Year", dataSnapshot.child("Year").getValue().toString());
+        hmtp.put("ID", dataSnapshot.child("ID").getValue().toString());
+
+        if (dataSnapshot.hasChild("IncomeType"))
         {
-            if (dataSnapshot.child("Year").getValue().toString().equals(sYear) && dataSnapshot
-                    .child("Month").getValue().toString().equals(sMonth))
-            {
-                HashMap<String, String> hmtp = new HashMap<>();
-                hmtp.put("CostNo", dataSnapshot.child("CostNo").getValue().toString());
-                hmtp.put("Cost", dataSnapshot.child("Cost").getValue().toString());
-                hmtp.put("Description", dataSnapshot.child("Description").getValue().toString
-                        ());
-                hmtp.put("Date", dataSnapshot.child("Date").getValue().toString());
-                hmtp.put("Type", dataSnapshot.child("Type").getValue().toString());
-                hmtp.put("Month", dataSnapshot.child("Month").getValue().toString());
-                hmtp.put("Year", dataSnapshot.child("Year").getValue().toString());
-                hmtp.put("ID", dataSnapshot.child("ID").getValue().toString());
-
-                if (dataSnapshot.hasChild("IncomeType"))
-                {
-                    hmtp.put("IncomeType", dataSnapshot.child("IncomeType").getValue()
-                            .toString());
-                }
-
-                alData.add(hmtp);
-            }
+            hmtp.put("IncomeType", dataSnapshot.child("IncomeType").getValue()
+                    .toString());
         }
 
-        sortData();
-        notifyDataSetChanged();
-        pb.setVisibility(View.GONE);
+        alData.add(hmtp);
     }
 
     private void sortData()
