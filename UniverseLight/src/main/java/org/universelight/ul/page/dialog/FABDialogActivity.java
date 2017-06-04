@@ -1,20 +1,11 @@
 package org.universelight.ul.page.dialog;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.transition.ArcMotion;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.Interpolator;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -23,14 +14,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.universelight.ul.R;
-import org.universelight.ul.morph.MorphDialogToFab;
-import org.universelight.ul.morph.MorphFabToDialog;
-import org.universelight.ul.morph.MorphTransition;
-import org.universelight.ul.util.FireBaseClass;
-import org.universelight.ul.util.Util;
-
-import java.util.Calendar;
-import java.util.HashMap;
 
 public class FABDialogActivity extends FABDefault implements View.OnClickListener
 {

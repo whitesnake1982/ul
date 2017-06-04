@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">宇光氣功研究推廣協會</string>
 
+    <!--common string-->
+    <string name="common_wait">請稍等...</string>
+    <string name="common_update">資料更新中...</string>
+    <string name="common_noAccount_permission">此帳號無權限進行此操作。</string>
+
+
     <!-- Strings related to login -->
     <string name="prompt_email">請輸入電子郵件</string>
     <string name="prompt_password">請輸入登入密碼</string>

@@ -6,22 +6,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.util.Log;
-
-import com.firebase.client.AuthData;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.google.firebase.auth.api.model.StringList;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+
+import org.universelight.ul.R;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by whitesnake on 2016/7/18.
@@ -34,7 +27,7 @@ public class FireBaseClass
 
     public void saveDataToFireBase(final Activity a, final Context c, HashMap hm , int type)
     {
-        progressDialog = ProgressDialog.show(a, "請稍等...", "資料更新中...", true);
+        progressDialog = ProgressDialog.show(a, c.getString(R.string.common_wait), c.getString(R.string.common_update), true);
 
         switch (type)
         {
@@ -89,7 +82,7 @@ public class FireBaseClass
                         }
                     };
 
-                    Util.showLog(c,"此帳號無權限進行此操作。" , listener);
+                    Util.showLog(c,c.getString(R.string.common_noAccount_permission) , listener);
                 }
                 else
                 {
@@ -108,7 +101,7 @@ public class FireBaseClass
 
     public void updateDataToFireBase(final Activity a, final Context c, HashMap hm , int type)
     {
-        progressDialog = ProgressDialog.show(a, "請稍等...", "資料更新中...", true);
+        progressDialog = ProgressDialog.show(a, c.getString(R.string.common_wait), c.getString(R.string.common_update), true);
 
         switch (type)
         {
@@ -153,7 +146,7 @@ public class FireBaseClass
                         }
                     };
 
-                    Util.showLog(c,"此帳號無權限進行此操作。" , listener);
+                    Util.showLog(c,c.getString(R.string.common_noAccount_permission) , listener);
                 }
                 else
                 {
@@ -172,7 +165,7 @@ public class FireBaseClass
 
     public void deleteDataToFireBase(final Context c, HashMap hm , int type)
     {
-        progressDialog = ProgressDialog.show(c, "請稍等...", "資料更新中...", true);
+        progressDialog = ProgressDialog.show(c, c.getString(R.string.common_wait), c.getString(R.string.common_update), true);
 
         switch (type)
         {
@@ -200,7 +193,7 @@ public class FireBaseClass
                 if(databaseError!=null)
                 {
 
-                    Util.showLog(c,"此帳號無權限進行此操作。");
+                    Util.showLog(c,c.getString(R.string.common_noAccount_permission));
                 }
 
             }
