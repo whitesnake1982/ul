@@ -21,11 +21,11 @@ import java.util.HashMap;
  */
 public class FireBaseClass
 {
-    ProgressDialog progressDialog;
-    String path = "";
-    FirebaseDatabase  db           = FirebaseDatabase.getInstance();
+    private ProgressDialog progressDialog;
+    private String           path = "";
+    private FirebaseDatabase db   = FirebaseDatabase.getInstance();
 
-    public void saveDataToFireBase(final Activity a, final Context c, HashMap hm , int type)
+    public void saveDataToFireBase(final Activity a, final Context c, HashMap<String, String> hm , int type)
     {
         progressDialog = ProgressDialog.show(a, c.getString(R.string.common_wait), c.getString(R.string.common_update), true);
 
