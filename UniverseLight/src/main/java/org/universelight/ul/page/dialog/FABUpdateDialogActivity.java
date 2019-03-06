@@ -39,37 +39,37 @@ public class FABUpdateDialogActivity extends FABDefault implements View.OnClickL
 
     private void buildEstateUI(String title, Bundle bundle) {
         m_data = new FABData();
-        m_data.CostNo = bundle.getString("CostNo");
-        m_data.Cost = bundle.getString("Cost");
-        m_data.Description = bundle.getString("Description");
-        m_data.Date = bundle.getString("Date");
-        m_data.Type = bundle.getString("Type");
-        m_data.ID = bundle.getString("ID");
-        m_data.IncomeType = bundle.getString("IncomeType");
+        m_data.setCostNo(bundle.getString("CostNo"));
+        m_data.setCost(bundle.getString("Cost"));
+        m_data.setDescription(bundle.getString("Description"));
+        m_data.setDate(bundle.getString("Date"));
+        m_data.setType(bundle.getString("Type"));
+        m_data.setID(bundle.getString("ID"));
+        m_data.setIncomeType(bundle.getString("IncomeType"));
 
         setContentView(R.layout.activity_fab_estate_dialog);
 
-        container = (ViewGroup) findViewById(R.id.estate_container);
+        container = findViewById(R.id.estate_container);
 
-        TextView tvTitle = (TextView) findViewById(R.id.dialog_estate_title);
+        TextView tvTitle = findViewById(R.id.dialog_estate_title);
         tvTitle.setText(title);
 
-        LinearLayout ll_include = (LinearLayout) findViewById(R.id.ll_estate_include);
+        LinearLayout ll_include = findViewById(R.id.ll_estate_include);
 
-        m_rgInOut = (RadioGroup) ll_include.findViewById(R.id
+        m_rgInOut = ll_include.findViewById(R.id
                 .rg_estate_inOutCome);
-        m_rbIn = (RadioButton) ll_include.findViewById(R.id.rb_estate_income);
-        m_rbOut = (RadioButton) findViewById(R.id.rb_estate_outcome);
+        m_rbIn = ll_include.findViewById(R.id.rb_estate_income);
+        m_rbOut = findViewById(R.id.rb_estate_outcome);
 
-        m_rgType = (RadioGroup) ll_include.findViewById(R.id.rg_estate_type);
-        m_rbDD = (RadioButton) ll_include.findViewById(R.id.rb_estate_dd);
-        m_rbCD = (RadioButton) findViewById(R.id.rb_estate_cd);
-        m_rbID = (RadioButton) findViewById(R.id.rb_estate_id);
+        m_rgType = ll_include.findViewById(R.id.rg_estate_type);
+        m_rbDD = ll_include.findViewById(R.id.rb_estate_dd);
+        m_rbCD = findViewById(R.id.rb_estate_cd);
+        m_rbID = findViewById(R.id.rb_estate_id);
 
-        m_tvDate = (TextView) ll_include.findViewById(R.id.tv_estate_dateBtn);
-        m_etCost = (EditText) ll_include.findViewById(R.id.et_estate_cost);
-        m_etCostNo = (EditText) ll_include.findViewById(R.id.et_estate_costNo);
-        m_etDescription = (EditText) ll_include.findViewById(R.id
+        m_tvDate = ll_include.findViewById(R.id.tv_estate_dateBtn);
+        m_etCost = ll_include.findViewById(R.id.et_estate_cost);
+        m_etCostNo = ll_include.findViewById(R.id.et_estate_costNo);
+        m_etDescription = ll_include.findViewById(R.id
                 .et_estate_description);
 
         m_rgInOut.setOnCheckedChangeListener(this);
@@ -83,28 +83,28 @@ public class FABUpdateDialogActivity extends FABDefault implements View.OnClickL
         //方式二
 //        setupSharedEelementTransitions2();
 
-        Button btnSave = (Button) container.findViewById(R.id.estate_save);
-        Button btnCancel = (Button) container.findViewById(R.id.estate_cancel);
+        Button btnSave = container.findViewById(R.id.estate_save);
+        Button btnCancel = container.findViewById(R.id.estate_cancel);
 
-        m_tvDate.setText(m_data.Date);
-        m_etCost.setText(m_data.Cost);
-        m_etCostNo.setText(m_data.CostNo);
-        m_etDescription.setText(m_data.Description);
-        m_strType = m_data.Type;
-        strYear = m_data.Date.substring(0, 4);
-        strMonth = m_data.Date.substring(4, 6);
+        m_tvDate.setText(m_data.getDate());
+        m_etCost.setText(m_data.getCost());
+        m_etCostNo.setText(m_data.getCostNo());
+        m_etDescription.setText(m_data.getDescription());
+        m_strType = m_data.getType();
+        strYear = m_data.getDate().substring(0, 4);
+        strMonth = m_data.getDate().substring(4, 6);
 
-        if (m_data.Type.equals("存入")) {
+        if (m_data.getType().equals("存入")) {
             m_rbIn.setChecked(true);
         } else {
             m_rbOut.setChecked(true);
         }
 
-        if (m_data.IncomeType.equals("活存")) {
+        if (m_data.getIncomeType().equals("活存")) {
             m_rbDD.setChecked(true);
-        } else if (m_data.IncomeType.equals("定存")) {
+        } else if (m_data.getIncomeType().equals("定存")) {
             m_rbCD.setChecked(true);
-        } else if (m_data.IncomeType.equals("利息")) {
+        } else if (m_data.getIncomeType().equals("利息")) {
             m_rbID.setChecked(true);
         }
 
@@ -115,30 +115,30 @@ public class FABUpdateDialogActivity extends FABDefault implements View.OnClickL
 
     private void buildPattyCashUI(String title, Bundle bundle) {
         m_data = new FABData();
-        m_data.CostNo = bundle.getString("CostNo");
-        m_data.Cost = bundle.getString("Cost");
-        m_data.Description = bundle.getString("Description");
-        m_data.Date = bundle.getString("Date");
-        m_data.Type = bundle.getString("Type");
-        m_data.ID = bundle.getString("ID");
+        m_data.setCostNo(bundle.getString("CostNo"));
+        m_data.setCost(bundle.getString("Cost"));
+        m_data.setDescription(bundle.getString("Description"));
+        m_data.setDate(bundle.getString("Date"));
+        m_data.setType(bundle.getString("Type"));
+        m_data.setID(bundle.getString("ID"));
 
         setContentView(R.layout.activity_fab_pattycash_dialog);
 
-        container = (ViewGroup) findViewById(R.id.container);
+        container = findViewById(R.id.container);
 
-        TextView tvTitle = (TextView) findViewById(R.id.dialog_title);
+        TextView tvTitle = findViewById(R.id.dialog_title);
         tvTitle.setText(title);
 
-        LinearLayout ll_include = (LinearLayout) findViewById(R.id.ll_include);
+        LinearLayout ll_include = findViewById(R.id.ll_include);
 
-        m_rgInOut = (RadioGroup) ll_include.findViewById(R.id.rg_inOutCome);
-        m_rbIn = (RadioButton) ll_include.findViewById(R.id.rb_income);
-        m_rbOut = (RadioButton) findViewById(R.id.rb_outcome);
+        m_rgInOut = ll_include.findViewById(R.id.rg_inOutCome);
+        m_rbIn = ll_include.findViewById(R.id.rb_income);
+        m_rbOut = findViewById(R.id.rb_outcome);
 
-        m_tvDate = (TextView) ll_include.findViewById(R.id.tv_dateBtn);
-        m_etCost = (EditText) ll_include.findViewById(R.id.et_cost);
-        m_etCostNo = (EditText) ll_include.findViewById(R.id.et_costNo);
-        m_etDescription = (EditText) ll_include.findViewById(R.id.et_description);
+        m_tvDate = ll_include.findViewById(R.id.tv_dateBtn);
+        m_etCost = ll_include.findViewById(R.id.et_cost);
+        m_etCostNo = ll_include.findViewById(R.id.et_costNo);
+        m_etDescription = ll_include.findViewById(R.id.et_description);
 
         m_rgInOut.setOnCheckedChangeListener(this);
         m_tvDate.setOnClickListener(this);
@@ -150,18 +150,18 @@ public class FABUpdateDialogActivity extends FABDefault implements View.OnClickL
         //方式二
 //        setupSharedEelementTransitions2();
 
-        Button btnSave = (Button) container.findViewById(R.id.save);
-        Button btnCancel = (Button) container.findViewById(R.id.cancel);
+        Button btnSave = container.findViewById(R.id.save);
+        Button btnCancel = container.findViewById(R.id.cancel);
 
-        m_tvDate.setText(m_data.Date);
-        m_etCost.setText(m_data.Cost);
-        m_etCostNo.setText(m_data.CostNo);
-        m_etDescription.setText(m_data.Description);
-        m_strType = m_data.Type;
-        strYear = m_data.Date.substring(0, 4);
-        strMonth = m_data.Date.substring(4, 6);
+        m_tvDate.setText(m_data.getDate());
+        m_etCost.setText(m_data.getCost());
+        m_etCostNo.setText(m_data.getCostNo());
+        m_etDescription.setText(m_data.getDescription());
+        m_strType = m_data.getType();
+        strYear = m_data.getDate().substring(0, 4);
+        strMonth = m_data.getDate().substring(4, 6);
 
-        if (m_data.Type.equals("收入")) {
+        if (m_data.getType().equals("收入")) {
             m_rbIn.setChecked(true);
         } else {
             m_rbOut.setChecked(true);
@@ -175,23 +175,23 @@ public class FABUpdateDialogActivity extends FABDefault implements View.OnClickL
 
     private void buildCashUI(String title, Bundle bundle) {
         m_data = new FABData();
-        m_data.CostNo = bundle.getString("CostNo");
-        m_data.Cost = bundle.getString("Cost");
-        m_data.Description = bundle.getString("Description");
-        m_data.Date = bundle.getString("Date");
-        m_data.Type = bundle.getString("Type");
-        m_data.ID = bundle.getString("ID");
+        m_data.setCostNo(bundle.getString("CostNo"));
+        m_data.setCost(bundle.getString("Cost"));
+        m_data.setDescription(bundle.getString("Description"));
+        m_data.setDate(bundle.getString("Date"));
+        m_data.setType(bundle.getString("Type"));
+        m_data.setID(bundle.getString("ID"));
 
         setContentView(R.layout.activity_fab_cash_dialog);
 
-        container = (ViewGroup) findViewById(R.id.cash_container);
+        container = findViewById(R.id.cash_container);
 
-        TextView tvTitle = (TextView) findViewById(R.id.dialog_cash_title);
+        TextView tvTitle = findViewById(R.id.dialog_cash_title);
         tvTitle.setText(title);
 
-        LinearLayout ll_include = (LinearLayout) findViewById(R.id.ll_cash_include);
+        LinearLayout ll_include = findViewById(R.id.ll_cash_include);
 
-        final Spinner m_spList = (Spinner) ll_include.findViewById(R.id.spinner_cash);
+        final Spinner m_spList = ll_include.findViewById(R.id.spinner_cash);
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.details,
                 R.layout.custom_spinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -199,10 +199,10 @@ public class FABUpdateDialogActivity extends FABDefault implements View.OnClickL
         m_spList.setAdapter(adapter);
         m_spList.setOnItemSelectedListener(this);
 
-        m_tvDate = (TextView) ll_include.findViewById(R.id.tv_cash_dateBtn);
-        m_etCost = (EditText) ll_include.findViewById(R.id.et_cash_cost);
-        m_etCostNo = (EditText) ll_include.findViewById(R.id.et_cash_costNo);
-        m_etDescription = (EditText) ll_include.findViewById(R.id
+        m_tvDate = ll_include.findViewById(R.id.tv_cash_dateBtn);
+        m_etCost = ll_include.findViewById(R.id.et_cash_cost);
+        m_etCostNo = ll_include.findViewById(R.id.et_cash_costNo);
+        m_etDescription = ll_include.findViewById(R.id
                 .et_cash_description);
 
         m_tvDate.setOnClickListener(this);
@@ -214,16 +214,16 @@ public class FABUpdateDialogActivity extends FABDefault implements View.OnClickL
         //方式二
 //        setupSharedEelementTransitions2();
 
-        Button btnSave = (Button) container.findViewById(R.id.cash_save);
-        Button btnCancel = (Button) container.findViewById(R.id.cash_cancel);
+        Button btnSave = container.findViewById(R.id.cash_save);
+        Button btnCancel = container.findViewById(R.id.cash_cancel);
 
-        m_tvDate.setText(m_data.Date);
-        m_etCost.setText(m_data.Cost);
-        m_etCostNo.setText(m_data.CostNo);
-        m_etDescription.setText(m_data.Description);
-        m_strType = m_data.Type;
-        strYear = m_data.Date.substring(0, 4);
-        strMonth = m_data.Date.substring(4, 6);
+        m_tvDate.setText(m_data.getDate());
+        m_etCost.setText(m_data.getCost());
+        m_etCostNo.setText(m_data.getCostNo());
+        m_etDescription.setText(m_data.getDescription());
+        m_strType = m_data.getType();
+        strYear = m_data.getDate().substring(0, 4);
+        strMonth = m_data.getDate().substring(4, 6);
 
         btnSave.setText("修改");
         btnSave.setOnClickListener(this);

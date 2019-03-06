@@ -44,26 +44,26 @@ public class FABDialogActivity extends FABDefault implements View.OnClickListene
     {
         setContentView(R.layout.activity_fab_estate_dialog);
 
-        container = (ViewGroup) findViewById(R.id.estate_container);
+        container = findViewById(R.id.estate_container);
 
-        TextView tvTitle = (TextView) findViewById(R.id.dialog_estate_title);
+        TextView tvTitle = findViewById(R.id.dialog_estate_title);
         tvTitle.setText(title);
 
-        LinearLayout ll_include = (LinearLayout) findViewById(R.id.ll_estate_include);
+        LinearLayout ll_include = findViewById(R.id.ll_estate_include);
 
-        m_rgInOut = (RadioGroup) ll_include.findViewById(R.id.rg_estate_inOutCome);
-        m_rbIn    = (RadioButton) ll_include.findViewById(R.id.rb_estate_income);
-        m_rbOut   = (RadioButton) findViewById(R.id.rb_estate_outcome);
+        m_rgInOut = ll_include.findViewById(R.id.rg_estate_inOutCome);
+        m_rbIn    = ll_include.findViewById(R.id.rb_estate_income);
+        m_rbOut   = findViewById(R.id.rb_estate_outcome);
 
-        m_rgType = (RadioGroup) ll_include.findViewById(R.id.rg_estate_type);
-        m_rbDD    = (RadioButton) ll_include.findViewById(R.id.rb_estate_dd);
-        m_rbCD   = (RadioButton) findViewById(R.id.rb_estate_cd);
-        m_rbID   = (RadioButton) findViewById(R.id.rb_estate_id);
+        m_rgType = ll_include.findViewById(R.id.rg_estate_type);
+        m_rbDD    = ll_include.findViewById(R.id.rb_estate_dd);
+        m_rbCD   = findViewById(R.id.rb_estate_cd);
+        m_rbID   = findViewById(R.id.rb_estate_id);
 
-        m_tvDate        = (TextView) ll_include.findViewById(R.id.tv_estate_dateBtn);
-        m_etCost        = (EditText) ll_include.findViewById(R.id.et_estate_cost);
-        m_etCostNo      = (EditText) ll_include.findViewById(R.id.et_estate_costNo);
-        m_etDescription = (EditText) ll_include.findViewById(R.id.et_estate_description);
+        m_tvDate        = ll_include.findViewById(R.id.tv_estate_dateBtn);
+        m_etCost        = ll_include.findViewById(R.id.et_estate_cost);
+        m_etCostNo      = ll_include.findViewById(R.id.et_estate_costNo);
+        m_etDescription = ll_include.findViewById(R.id.et_estate_description);
 
         m_rgInOut.setOnCheckedChangeListener(this);
         m_rgType.setOnCheckedChangeListener(this);
@@ -84,21 +84,21 @@ public class FABDialogActivity extends FABDefault implements View.OnClickListene
     {
         setContentView(R.layout.activity_fab_pattycash_dialog);
 
-        container = (ViewGroup) findViewById(R.id.container);
+        container = findViewById(R.id.container);
 
-        TextView tvTitle = (TextView) findViewById(R.id.dialog_title);
+        TextView tvTitle = findViewById(R.id.dialog_title);
         tvTitle.setText(title);
 
-        LinearLayout ll_include = (LinearLayout) findViewById(R.id.ll_include);
+        LinearLayout ll_include = findViewById(R.id.ll_include);
 
-        m_rgInOut = (RadioGroup) ll_include.findViewById(R.id.rg_inOutCome);
-        m_rbIn    = (RadioButton) ll_include.findViewById(R.id.rb_income);
-        m_rbOut   = (RadioButton) findViewById(R.id.rb_outcome);
+        m_rgInOut = ll_include.findViewById(R.id.rg_inOutCome);
+        m_rbIn    = ll_include.findViewById(R.id.rb_income);
+        m_rbOut   = findViewById(R.id.rb_outcome);
 
-        m_tvDate        = (TextView) ll_include.findViewById(R.id.tv_dateBtn);
-        m_etCost        = (EditText) ll_include.findViewById(R.id.et_cost);
-        m_etCostNo      = (EditText) ll_include.findViewById(R.id.et_costNo);
-        m_etDescription = (EditText) ll_include.findViewById(R.id.et_description);
+        m_tvDate        = ll_include.findViewById(R.id.tv_dateBtn);
+        m_etCost        = ll_include.findViewById(R.id.et_cost);
+        m_etCostNo      = ll_include.findViewById(R.id.et_costNo);
+        m_etDescription = ll_include.findViewById(R.id.et_description);
 
         m_rgInOut.setOnCheckedChangeListener(this);
         m_tvDate.setOnClickListener(this);
@@ -110,8 +110,8 @@ public class FABDialogActivity extends FABDefault implements View.OnClickListene
         //方式二
 //        setupSharedEelementTransitions2();
 
-        Button btnSave = (Button)container.findViewById(R.id.save);
-        Button btnCancel = (Button)container.findViewById(R.id.cancel);
+        Button btnSave = container.findViewById(R.id.save);
+        Button btnCancel = container.findViewById(R.id.cancel);
 
         btnSave.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
@@ -122,14 +122,14 @@ public class FABDialogActivity extends FABDefault implements View.OnClickListene
     {
         setContentView(R.layout.activity_fab_cash_dialog);
 
-        container = (ViewGroup) findViewById(R.id.cash_container);
+        container = findViewById(R.id.cash_container);
 
-        TextView tvTitle = (TextView) findViewById(R.id.dialog_cash_title);
+        TextView tvTitle = findViewById(R.id.dialog_cash_title);
         tvTitle.setText(title);
 
-        LinearLayout ll_include = (LinearLayout) findViewById(R.id.ll_cash_include);
+        LinearLayout ll_include = findViewById(R.id.ll_cash_include);
 
-        final Spinner m_spList = (Spinner) ll_include.findViewById(R.id.spinner_cash);
+        final Spinner m_spList = ll_include.findViewById(R.id.spinner_cash);
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.details,
                 R.layout.custom_spinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -137,10 +137,10 @@ public class FABDialogActivity extends FABDefault implements View.OnClickListene
         m_spList.setAdapter(adapter);
         m_spList.setOnItemSelectedListener(this);
 
-        m_tvDate        = (TextView) ll_include.findViewById(R.id.tv_cash_dateBtn);
-        m_etCost        = (EditText) ll_include.findViewById(R.id.et_cash_cost);
-        m_etCostNo      = (EditText) ll_include.findViewById(R.id.et_cash_costNo);
-        m_etDescription = (EditText) ll_include.findViewById(R.id.et_cash_description);
+        m_tvDate        = ll_include.findViewById(R.id.tv_cash_dateBtn);
+        m_etCost        = ll_include.findViewById(R.id.et_cash_cost);
+        m_etCostNo      = ll_include.findViewById(R.id.et_cash_costNo);
+        m_etDescription = ll_include.findViewById(R.id.et_cash_description);
 
         m_tvDate.setOnClickListener(this);
 

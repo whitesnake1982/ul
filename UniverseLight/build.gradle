@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 28
@@ -45,5 +47,9 @@ dependencies {
     implementation 'com.itextpdf.tool:xmlworker:5.5.9'
     implementation 'com.itextpdf:itextg:5.5.9'
     implementation 'com.itextpdf:itext-asian:5.2.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}

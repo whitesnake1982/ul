@@ -11,15 +11,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import org.universelight.ul.R;
-import org.universelight.ul.ui.ULUIDefine;
+import org.universelight.ul.ui.UIDefine;
 import org.universelight.ul.util.CardViewGetDeleteID;
 import org.universelight.ul.util.CardViewGetID;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static org.universelight.ul.ui.ULUIDefine.FontSize_6u;
-import static org.universelight.ul.ui.ULUIDefine.FontSize_8u;
 
 /**
  * Created by hsinheng on 16/7/19.
@@ -30,12 +27,12 @@ class RecycleViewChildAdapter extends RecyclerView.Adapter<RecycleViewChildAdapt
 
     private ArrayList<HashMap<String, String>> alData;
 
-    private static ULUIDefine mUIDefine;
+    private static UIDefine mUIDefine;
 
     RecycleViewChildAdapter(Context c, ArrayList<HashMap<String, String>> hashMaps)
     {
         this.alData = hashMaps;
-        mUIDefine = ULUIDefine.getInstance(c);
+        mUIDefine = UIDefine.Companion.getInstance(c);
     }
 
     static class ChildViewHolder extends RecyclerView.ViewHolder
@@ -90,15 +87,15 @@ class RecycleViewChildAdapter extends RecyclerView.Adapter<RecycleViewChildAdapt
         TextView       tvCostValue   = holder.tvCostValue;
         TextView       tvCostTitle   = holder.tvCostTitle;
 
-        mUIDefine.setTextSize(FontSize_8u, tvChildTitle);
-        mUIDefine.setTextSize(FontSize_6u, tvDateValue);
-        mUIDefine.setTextSize(FontSize_6u, tvDateTitle);
-        mUIDefine.setTextSize(FontSize_6u, tvCostNOValue);
-        mUIDefine.setTextSize(FontSize_6u, tvCostNOTitle);
-        mUIDefine.setTextSize(FontSize_6u, tvTypeValue);
-        mUIDefine.setTextSize(FontSize_6u, tvTypeTitle);
-        mUIDefine.setTextSize(FontSize_6u, tvCostValue);
-        mUIDefine.setTextSize(FontSize_6u, tvCostTitle);
+        mUIDefine.setTextSize(UIDefine.Companion.getFontSize_8u(), tvChildTitle);
+        mUIDefine.setTextSize(UIDefine.Companion.getFontSize_6u(), tvDateValue);
+        mUIDefine.setTextSize(UIDefine.Companion.getFontSize_6u(), tvDateTitle);
+        mUIDefine.setTextSize(UIDefine.Companion.getFontSize_6u(), tvCostNOValue);
+        mUIDefine.setTextSize(UIDefine.Companion.getFontSize_6u(), tvCostNOTitle);
+        mUIDefine.setTextSize(UIDefine.Companion.getFontSize_6u(), tvTypeValue);
+        mUIDefine.setTextSize(UIDefine.Companion.getFontSize_6u(), tvTypeTitle);
+        mUIDefine.setTextSize(UIDefine.Companion.getFontSize_6u(), tvCostValue);
+        mUIDefine.setTextSize(UIDefine.Companion.getFontSize_6u(), tvCostTitle);
 
         int    i = listPosition - 1;
         String strMonth;

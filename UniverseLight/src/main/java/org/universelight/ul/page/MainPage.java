@@ -2,29 +2,21 @@ package org.universelight.ul.page;
 
 import android.app.ActivityOptions;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.Switch;
-import android.widget.TextView;
 
+import org.universelight.ul.Base.BaseActivity;
 import org.universelight.ul.R;
-import org.universelight.ul.objects.MobileGlobalVariable;
 import org.universelight.ul.page.dialog.FABUpdateDialogActivity;
 import org.universelight.ul.ui.adapter.SectionsPagerAdapter;
 import org.universelight.ul.page.dialog.FABDialogActivity;
@@ -63,14 +55,14 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
 
         initVariables(MainPage.this);
 
-        TAB_TITLE = mPage.getString(R.string.activity_main_page_title_pc);
+        TAB_TITLE = getMPage().getString(R.string.activity_main_page_title_pc);
 
         setContentView(R.layout.activity_main_page);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(this);
 
         CardViewGetID cardViewGetID = new CardViewGetID();
@@ -80,11 +72,11 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
         cardViewGetDeleteID.setCardOnDeleteClickListener(this);
 
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mSectionsPagerAdapter.addFragment(PattyCashFragment.newInstance(), getString(R.string.activity_main_page_title_pc));
-        mSectionsPagerAdapter.addFragment(CashFragment.newInstance(), getString(R.string.activity_main_page_title_c));
-        mSectionsPagerAdapter.addFragment(EstateFragment.newInstance(), getString(R.string.activity_main_page_title_e));
+        mSectionsPagerAdapter.addFragment(PattyCashFragment.Companion.newInstance(), getString(R.string.activity_main_page_title_pc));
+        mSectionsPagerAdapter.addFragment(CashFragment.Companion.newInstance(), getString(R.string.activity_main_page_title_c));
+        mSectionsPagerAdapter.addFragment(EstateFragment.Companion.newInstance(), getString(R.string.activity_main_page_title_e));
 
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -104,7 +96,7 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
             }
         });
 
-        TabLayout mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout mTabLayout = findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener()
         {
@@ -147,13 +139,13 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    mgv.strSearchYear = "";
-                    mgv.strSearchMonth = "";
-                    FilterCondition.onSearchConditionListener.getSearchOptions(mgv.strSearchYear, mgv.strSearchMonth);
+                    getMgv().strSearchYear = "";
+                    getMgv().strSearchMonth = "";
+                    FilterCondition.onSearchConditionListener.getSearchOptions(getMgv().strSearchYear, getMgv().strSearchMonth);
                     SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-                    mSectionsPagerAdapter.addFragment(PattyCashFragment.newInstance(), getString(R.string.activity_main_page_title_pc));
-                    mSectionsPagerAdapter.addFragment(CashFragment.newInstance(), getString(R.string.activity_main_page_title_c));
-                    mSectionsPagerAdapter.addFragment(EstateFragment.newInstance(), getString(R.string.activity_main_page_title_e));
+                    mSectionsPagerAdapter.addFragment(PattyCashFragment.Companion.newInstance(), getString(R.string.activity_main_page_title_pc));
+                    mSectionsPagerAdapter.addFragment(CashFragment.Companion.newInstance(), getString(R.string.activity_main_page_title_c));
+                    mSectionsPagerAdapter.addFragment(EstateFragment.Companion.newInstance(), getString(R.string.activity_main_page_title_e));
 
                     mViewPager.setAdapter(mSectionsPagerAdapter);
                     mViewPager.setCurrentItem(onPageScrolledPrePosition);
@@ -170,7 +162,7 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
         }
         else if (id == R.id.action_option)
         {
-            SettingDialog sd = new SettingDialog(mPage);
+            SettingDialog sd = new SettingDialog(getMPage());
             return true;
         }
 
@@ -185,11 +177,11 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
         int      iDay = c.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog d;
-        d = CustomDatePickerDialog.createMonthYearDatePicker(mPage, id, iYear, iMonth, iDay, new DatePickerDialog.OnDateSetListener() {
+        d = CustomDatePickerDialog.createMonthYearDatePicker(getMPage(), id, iYear, iMonth, iDay, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                mgv.strSearchYear = String.valueOf(year);
+                getMgv().strSearchYear = String.valueOf(year);
 
                 String month;
 
@@ -201,17 +193,17 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
                 {
                     month = String.valueOf(monthOfYear + 1);
                 }
-                mgv.strSearchMonth = month;
+                getMgv().strSearchMonth = month;
 
                 switch (id)
                 {
                     case R.id.action_search:
 
-                        FilterCondition.onSearchConditionListener.getSearchOptions(mgv.strSearchYear, mgv.strSearchMonth);
+                        FilterCondition.onSearchConditionListener.getSearchOptions(getMgv().strSearchYear, getMgv().strSearchMonth);
                         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-                        mSectionsPagerAdapter.addFragment(PattyCashFragment.newInstance(), getString(R.string.activity_main_page_title_pc));
-                        mSectionsPagerAdapter.addFragment(CashFragment.newInstance(), getString(R.string.activity_main_page_title_c));
-                        mSectionsPagerAdapter.addFragment(EstateFragment.newInstance(), getString(R.string.activity_main_page_title_e));
+                        mSectionsPagerAdapter.addFragment(PattyCashFragment.Companion.newInstance(), getString(R.string.activity_main_page_title_pc));
+                        mSectionsPagerAdapter.addFragment(CashFragment.Companion.newInstance(), getString(R.string.activity_main_page_title_c));
+                        mSectionsPagerAdapter.addFragment(EstateFragment.Companion.newInstance(), getString(R.string.activity_main_page_title_e));
 
                         mViewPager.setAdapter(mSectionsPagerAdapter);
                         mViewPager.setCurrentItem(onPageScrolledPrePosition);
@@ -330,7 +322,7 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
 
         final HashMap hm = id;
 
-        Util.showConfirm(mPage, "\t\t" + mPage.getString(R.string.section_title) + "\t：\t" + hm.get("Description") + "\n\t\t" + mPage.getString(R.string.month_title) + "\t：\t" + hm.get("Date") + "\n\t\t" + mPage.getString(R.string.no_title) + "\t：\t" + hm.get("CostNo") , new DialogInterface.OnClickListener()
+        Util.INSTANCE.showConfirm(getMPage(), "\t\t" + getMPage().getString(R.string.section_title) + "\t：\t" + hm.get("Description") + "\n\t\t" + getMPage().getString(R.string.month_title) + "\t：\t" + hm.get("Date") + "\n\t\t" + getMPage().getString(R.string.no_title) + "\t：\t" + hm.get("CostNo") , new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
@@ -349,7 +341,7 @@ public class MainPage extends BaseActivity implements View.OnClickListener, Card
                 }
 
                 FireBaseClass fbc = new FireBaseClass();
-                fbc.deleteDataToFireBase(mPage, hm, type);
+                fbc.deleteDataToFireBase(getMPage(), hm, type);
             }
         });
     }

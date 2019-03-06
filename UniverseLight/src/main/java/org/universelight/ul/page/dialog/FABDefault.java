@@ -2,6 +2,8 @@ package org.universelight.ul.page.dialog;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.ArcMotion;
@@ -17,9 +19,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import org.universelight.ul.R;
-import org.universelight.ul.morph.MorphDialogToFab;
-import org.universelight.ul.morph.MorphFabToDialog;
-import org.universelight.ul.morph.MorphTransition;
+import org.universelight.ul.animation.morph.MorphDialogToFab;
+import org.universelight.ul.animation.morph.MorphFabToDialog;
+import org.universelight.ul.animation.morph.MorphTransition;
 import org.universelight.ul.util.FireBaseClass;
 import org.universelight.ul.util.Util;
 
@@ -48,6 +50,7 @@ public class FABDefault extends AppCompatActivity implements RadioGroup.OnChecke
      * 使用方式一：调用setupSharedEelementTransitions1方法
      * 使用这种方式的话需要的类是 MorphDrawable, MorphFabToDialog, MorphDialogToFab
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void setupSharedEelementTransitions1()
     {
         ArcMotion arcMotion = new ArcMotion();
@@ -78,6 +81,7 @@ public class FABDefault extends AppCompatActivity implements RadioGroup.OnChecke
      * 使用方式二：调用setupSharedEelementTransitions2方法
      * 使用这种方式的话需要的类是 MorphDrawable, MorphTransition
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void setupSharedEelementTransitions2()
     {
         ArcMotion arcMotion = new ArcMotion();
@@ -177,19 +181,19 @@ public class FABDefault extends AppCompatActivity implements RadioGroup.OnChecke
 
     public boolean checkInputData(AppCompatActivity f, EditText m_etCost, EditText m_etDescription, TextView m_tvDate) {
         if (m_etDescription.getText().toString().equals("")) {
-            Util.showLog(f, getString(R.string.dialog_FABDefault_check_msg1));
+            Util.INSTANCE.showLog(f, getString(R.string.dialog_FABDefault_check_msg1));
             return false;
         } else if (m_strIncomeType.equals("") && m_iType == 3) {
-            Util.showLog(f, getString(R.string.dialog_FABDefault_check_msg2));
+            Util.INSTANCE.showLog(f, getString(R.string.dialog_FABDefault_check_msg2));
             return false;
         } else if (m_etCost.getText().toString().equals("")) {
-            Util.showLog(f, getString(R.string.dialog_FABDefault_check_msg3));
+            Util.INSTANCE.showLog(f, getString(R.string.dialog_FABDefault_check_msg3));
             return false;
         } else if (m_tvDate.getText().toString().equals(getString(R.string.common_choose))) {
-            Util.showLog(f, getString(R.string.dialog_FABDefault_check_msg4));
+            Util.INSTANCE.showLog(f, getString(R.string.dialog_FABDefault_check_msg4));
             return false;
         } else if (m_strType.equals("")) {
-            Util.showLog(f, getString(R.string.dialog_FABDefault_check_msg5));
+            Util.INSTANCE.showLog(f, getString(R.string.dialog_FABDefault_check_msg5));
             return false;
         } else {
             return true;
@@ -207,7 +211,7 @@ public class FABDefault extends AppCompatActivity implements RadioGroup.OnChecke
             hmtp.put("Type", m_strType);
             hmtp.put("Month", strMonth);
             hmtp.put("Year", strYear);
-            hmtp.put("ID", m_data.ID);
+            hmtp.put("ID", m_data.getID());
 
             if(!m_strIncomeType.equals(""))
             {

@@ -82,7 +82,7 @@ public class FireBaseClass
                         }
                     };
 
-                    Util.showLog(c,c.getString(R.string.common_noAccount_permission) , listener);
+                    Util.INSTANCE.showLog(c,c.getString(R.string.common_noAccount_permission) , listener);
                 }
                 else
                 {
@@ -146,7 +146,7 @@ public class FireBaseClass
                         }
                     };
 
-                    Util.showLog(c,c.getString(R.string.common_noAccount_permission) , listener);
+                    Util.INSTANCE.showLog(c,c.getString(R.string.common_noAccount_permission) , listener);
                 }
                 else
                 {
@@ -193,7 +193,7 @@ public class FireBaseClass
                 if(databaseError!=null)
                 {
 
-                    Util.showLog(c,c.getString(R.string.common_noAccount_permission));
+                    Util.INSTANCE.showLog(c,c.getString(R.string.common_noAccount_permission));
                 }
 
             }
