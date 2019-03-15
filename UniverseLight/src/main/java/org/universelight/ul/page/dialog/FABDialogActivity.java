@@ -24,7 +24,7 @@ public class FABDialogActivity extends FABDefault implements View.OnClickListene
         super.onCreate(savedInstanceState);
 
         Bundle bundle = this.getIntent().getExtras();
-        m_iType = bundle.getInt("DIALOG_TYPE");
+        m_iType = bundle.getInt("DIALOG_TYPE", 1);
 
         switch (m_iType)
         {
@@ -70,9 +70,9 @@ public class FABDialogActivity extends FABDefault implements View.OnClickListene
         m_tvDate.setOnClickListener(this);
 
         //方式一
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setupSharedEelementTransitions1();
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            setupSharedEelementTransitions1();
+//        }
         //方式二
 //        setupSharedEelementTransitions2();
 
@@ -104,9 +104,9 @@ public class FABDialogActivity extends FABDefault implements View.OnClickListene
         m_tvDate.setOnClickListener(this);
 
         //方式一
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setupSharedEelementTransitions1();
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            setupSharedEelementTransitions1();
+//        }
         //方式二
 //        setupSharedEelementTransitions2();
 
@@ -145,9 +145,9 @@ public class FABDialogActivity extends FABDefault implements View.OnClickListene
         m_tvDate.setOnClickListener(this);
 
         //方式一
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setupSharedEelementTransitions1();
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            setupSharedEelementTransitions1();
+//        }
         //方式二
 //        setupSharedEelementTransitions2();
 

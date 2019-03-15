@@ -38,14 +38,14 @@
             android:name=".page.dialog.FABDialogActivity"
             android:label="@string/title_activity_patty_cash_dialog"
             android:parentActivityName=".page.MainPage"
-            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme.Dialog"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".page.dialog.FABUpdateDialogActivity"
             android:label="@string/title_activity_patty_cash_dialog"
             android:parentActivityName=".page.MainPage"
-            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme.Dialog"
             android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
